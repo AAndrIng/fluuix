@@ -1,6 +1,0 @@
-node_modules/
-.env
-out/
-cache/
-broadcast/
-.DS_Store
