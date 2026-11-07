@@ -21,7 +21,7 @@ Rutas: `/`, `/dashboard`, `/mover`, `/pagos`, `/operativas`, `/depositar`, `/age
 6. Revisar el detalle de pagos y exportar movimientos. Se puede importar CSV, crear operativas y editar umbrales.
 7. En Agente de tesorería, evaluar mercados con la política inicial. Cambiar la tasa objetivo o el riesgo y revisar el log. Los mercados, las tasas y Belo son simulados.
 
-La persistencia es localStorage y no tiene autenticación: solo es una demo. Reiniciar vuelve al escenario inicial. No se conectan wallets, no hay cifrado, no se firman operaciones ni se generan hashes. La fuente de configuración está en `src/lib/config.ts`; `NEXT_PUBLIC_MODE=chain` muestra explícitamente que falta el adaptador y no convierte la simulación en una operación real.
+En modo `mock`, la persistencia es localStorage y Reiniciar vuelve al escenario inicial. El registro de demo usa referencias locales. El agente evalúa reglas con tasas y mercados simulados.
 
 ## Correspondencia con TreasuryVault
 
@@ -43,4 +43,91 @@ npx tsc --noEmit
 npm run build
 ```
 
-Para integración real faltan token/vault/bloque de despliegue, ABI verificada del build y un adaptador wagmi/viem con conexión de wallet, control de Fuji, allowance/approve, recibos y lectura de eventos. Los enlaces de Snowtrace deben crearse únicamente con hashes reales confirmados.
+## Activar intercompany en Avalanche Fuji
+
+La interfaz y la API de Next.js salen del mismo deploy en Vercel, con Root Directory `web`. Supabase aloja Postgres. El contrato y los saldos viven en Avalanche Fuji.
+
+### 1. Conseguí los tres datos de Fuji
+
+El contexto de Treasury Rail trae el RPC, el chain ID `43113`, el código de `MockARGt.sol` en la sección 6.4 y el de `TreasuryVault.sol` en la 6.5. La sección 11 tiene los campos del despliegue vacíos. El PDF de Twin menciona Avalanche y especifica 18 decimales, pero la tabla de contratos se corta en la página 2 y no confirma un ARGt en Fuji. La [lista pública de contratos de Twin](https://docs.twin.finance/en/stablecoins/contracts) tampoco lista Fuji.
+
+| Dato | De dónde sacarlo |
+| --- | --- |
+| `NEXT_PUBLIC_VAULT_ADDRESS` | Dirección del contrato creado en la transacción de despliegue de `TreasuryVault`, en Fuji. |
+| `NEXT_PUBLIC_TOKEN_ADDRESS` | Dirección que devuelve `token()` en ese vault. Tiene que ser el ERC-20 con el que se desplegó y devolver `18` en `decimals()`. |
+| `NEXT_PUBLIC_VAULT_DEPLOY_BLOCK` | Número de bloque decimal de la transacción que **creó el vault**. Abrí el hash del despliegue en el explorador y copiá el campo **Block**. |
+
+Si el equipo ya desplegó el vault, pedile **el enlace a la transacción de creación en Fuji y la wallet que tiene el rol `TESORERO`**. El enlace te permite recuperar la dirección y el bloque, y `token()` te da el token. La dirección de un vault de Morpho, un pool o un token de otra red no corresponde a estos campos.
+
+### 2. Dejá el vault listo para mover caja
+
+Configurá la wallet con **Avalanche Fuji C-Chain**, chain ID **43113**, RPC `https://api.avax-test.network/ext/bc/C/rpc` y moneda de gas **AVAX**. Conseguí AVAX de prueba para la wallet que va a firmar. El AVAX paga gas y el ERC-20 es el saldo que mueve Fluuix. [Red y faucet oficiales de Avalanche](https://docs.avax.network/docs/primary-network)
+
+Si todavía no hay despliegue, usá [Remix](https://remix.ethereum.org/) con los contratos suministrados:
+
+1. Pedí a los mentores de Twin la **dirección del ARGt de Fuji y tokens de prueba** si están disponibles. Si no los conseguís, desplegá primero `MockARGt` del contexto para probar el flujo en Fuji. Es un token de prueba y la consigna de Twin pide una stablecoin oficial de Twin para competir en su track.
+2. Compilá `TreasuryVault.sol` con un compilador compatible con sus imports de OpenZeppelin, con **EVM Version `cancun`**. En **Deploy & Run**, seleccioná la extensión de wallet, confirmá que marque Fuji y desplegá `TreasuryVault` con `_token` igual a la dirección del ERC-20 elegido y `nombreCajaCentral` igual a `Caja central`. El vault queda ligado a ese token desde el constructor.
+3. Guardá las direcciones, el hash del despliegue y los ajustes de compilación. Para el track Blockchain, verificá el vault en el explorador con el mismo código, compilador, optimización y versión EVM. [Deploy en Remix](https://remix-ide.readthedocs.io/en/latest/run.html) · [Verificación en Avalanche](https://build.avax.network/docs/tooling/contract-verification)
+
+Si el vault está vacío, preparalo una sola vez desde **Deployed Contracts** en Remix. Para un contrato que ya desplegó otra persona, cargá su dirección con la ABI compilada mediante **At Address** y usá la wallet con rol de tesorero. La wallet que desplegó el vault suministrado recibe ese rol en el constructor.
+
+| Dónde | Qué ejecutar |
+| --- | --- |
+| Vault | Llamá `verOperativas()`. Si solo aparece Caja central, llamá `crearOperativa("Local Palermo", 0, 0)`. Caja central es el ID `0` y la primera operativa nueva es el `1`. |
+| Token | Confirmá que la wallet tenga saldo con `balanceOf(wallet)`. Para un depósito de **10 tokens**, llamá `approve(DIRECCION_DEL_VAULT, 10000000000000000000)`. |
+| Vault | Llamá `depositar(0, 10000000000000000000)`. Volvé a `verOperativas()` y comprobá que Caja central tenga 10 tokens, si arrancó en cero. |
+
+Si ya hay dos operativas activas y una tiene saldo, podés pasar directo a configurar la app. En `/mover` los importes se escriben en unidades de token, por ejemplo `1`.
+
+### 3. Creá la base en Supabase
+
+1. En Supabase, creá un proyecto y abrí **SQL Editor → New query**. Pegá todo [001_intercompany.sql](db/001_intercompany.sql) y ejecutalo con **Run**. Se crean `intercompany_operations` e `intercompany_used_challenges`.
+2. En el encabezado del proyecto, abrí **Connect → Transaction pooler**. Copiá la URI de Postgres del puerto `6543` y reemplazá el marcador de contraseña por la contraseña de la base. Ese es `DATABASE_URL`. Usá el usuario `postgres.<project-ref>` que trae esa URI y mantené la conexión con TLS. [Conexión a Postgres en Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres)
+
+### 4. Configurá y probá Next.js en tu máquina
+
+Desde `web`, creá `.env.local` a partir de [la plantilla](.env.example). Generá el secreto de sesión en tu terminal:
+
+```powershell
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+```
+
+Completá los marcadores con los valores de los pasos anteriores:
+
+```dotenv
+NEXT_PUBLIC_MODE=chain
+NEXT_PUBLIC_VAULT_ADDRESS=<direccion-del-vault-en-fuji>
+NEXT_PUBLIC_TOKEN_ADDRESS=<direccion-que-devuelve-token>
+NEXT_PUBLIC_VAULT_DEPLOY_BLOCK=<bloque-decimal-de-creacion>
+DATABASE_URL=<uri-de-supabase-transaction-pooler>
+INTERCOMPANY_SESSION_SECRET=<secreto-generado>
+APP_ORIGIN=http://localhost:3000
+```
+
+El RPC público de Fuji viene configurado. Si el equipo tiene otro RPC de Fuji, podés ponerlo en `AVALANCHE_RPC_URL` del servidor. Guardá `.env.local` solo en tu máquina. Si usás otro puerto u host, poné exactamente ese origen en `APP_ORIGIN`.
+
+```powershell
+npm install
+npm run dev
+```
+
+Abrí `http://localhost:3000/mover` en un navegador con la wallet. Conectá el tesorero, firmá el mensaje de acceso y elegí **Caja central → Local Palermo**. Registrá un préstamo de **1 token** al **12,5% TNA** y firmá la transacción. Abrí `/dashboard` y comprobá que el registro diga **Confirmada**, muestre el capital y la tasa y tenga un enlace al hash. Con el ejemplo de arriba, los saldos pasan de **10 / 0** a **9 / 1**. Si la transacción salió pero no se concilió, copiá el hash de la wallet y usá **Conciliar transacción**.
+
+### 5. Subí la misma configuración a Vercel
+
+Subí a GitHub la rama que contiene el backend, incluida la carpeta `web/src/app/api/intercompany`. En Vercel, importá el repo con preset **Next.js** y **Root Directory `web`**. En **Settings → Environment Variables → Production**, cargá las mismas claves, con `APP_ORIGIN` igual al dominio HTTPS que vas a usar para la demo, sin una ruta al final. Guardá ahí la URI de Postgres y el secreto. Si todavía no tenés el dominio, creá el proyecto, copiá su dominio estable y cargá la configuración antes del redeploy. Después de guardar las variables, hacé **Redeploy** y repetí la prueba desde el dominio configurado. [Vercel para monorepos](https://vercel.com/docs/monorepos) · [Variables de entorno](https://vercel.com/docs/environment-variables/managing-environment-variables)
+
+| Si ves esto | Revisá esto |
+| --- | --- |
+| Aparece el dashboard de demo | `NEXT_PUBLIC_MODE=chain` en el entorno correcto y nuevo build después del cambio. |
+| «Origen de la solicitud inválido» | La URL abierta debe coincidir con `APP_ORIGIN`, incluido HTTPS y el dominio exacto. |
+| «Esta wallet no tiene el rol TESORERO» | Cuenta activa y rol en el vault configurado. |
+| «Faltan la dirección del vault, del token o el bloque» | Las tres variables públicas deben estar completas. El bloque se carga como número decimal. |
+| «No se pudo consultar Fuji o Postgres» | Logs de Vercel, cadena del RPC, URI del pooler con la contraseña correcta y migración aplicada. |
+| Falta saldo para mover | Saldo interno de origen en `verOperativas()` y AVAX de prueba en la wallet para pagar gas. |
+
+Para la entrega guardá el enlace al **vault verificado**, el **hash de un movimiento iniciado desde la web** y la **URL de Vercel**. El flujo real implementado cubre intercompany. La pantalla del agente sigue mostrando recomendaciones simuladas y la firma manual del tesorero corresponde a la demo Blockchain.
+
+La API firma el desafío de sesión con un nonce de un solo uso. La wallet firma el mensaje de acceso y luego la transacción. Postgres guarda la tasa y la nota, y la transacción publica la referencia `FLX:<uuid>`. La API verifica la red, el emisor, el vault, los argumentos y el evento antes de confirmar. Si la conciliación se interrumpe, pegá el hash de la wallet en **Conciliar transacción**.
+
+Las rutas disponibles son `POST /api/intercompany/session`, `GET /api/intercompany`, `POST /api/intercompany` y `POST /api/intercompany/:id/confirmacion`. La preparación reutiliza un UUID de operación para reintentos con los mismos datos. El contrato actual permite que una wallet firme dos transacciones distintas con la misma referencia. Para automatizar la firma desde un ERP hace falta bloquear referencias duplicadas en el vault. Depósitos, pagos, rebalanceo y el agente se prueban en modo demo.
