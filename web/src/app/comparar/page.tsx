@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function ComparePage(){return <main className="roadmap-page"><span className="eyebrow">FLUUIX / TREASURY RAIL</span><h1>La privacidad está en el roadmap.</h1><p>El TreasuryVault actual usa saldos y montos públicos. La integración con eERC todavía no está disponible.</p><Link className="button button-dark" href="/dashboard">Explorar la caja unificada →</Link></main>;}
