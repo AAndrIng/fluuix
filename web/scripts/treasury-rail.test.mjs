@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { formatRate, parseRateBps, snowtraceTransaction } from '../src/lib/intercompany.ts';
 import { applyRailAction, createInitialRailState, dateArgentina, estimatedTax, formatArgt, parseArgt, parseRecipientsCsv, totalBalance } from '../src/lib/treasury-rail.ts';
 const units = parseArgt;
 const apply = (state, action) => applyRailAction(state, action, '2026-11-07T15:00:00.000Z').state;
@@ -88,4 +89,17 @@ test('thresholds cannot mutate central rules and must have target >= minimum', (
 });
 test('dates render deterministically in Argentina', () => {
   assert.equal(dateArgentina('2026-11-07T13:00:00.000Z'), '07/11/2026 · 10:00');
+});
+
+test('intercompany loan terms persist without changing the principal or accruing interest', () => {
+  const initial = createInitialRailState();
+  const terms = { kind: 'loan', rateBps: parseRateBps('12,50') };
+  const next = apply(initial, { type: 'transfer', from: 0, to: 1, amount: units('100.000'), concept: 'Préstamo intercompany', intercompany: terms });
+  assert.deepEqual(next.events[0].intercompany, terms);
+  assert.equal(formatRate(terms.rateBps), '12,5% TNA');
+  assert.equal(next.operativas[1].saldo, units('100.000'));
+  assert.equal(totalBalance(next), totalBalance(initial));
+  assert.equal(snowtraceTransaction(next.events[0].txHash, 'https://testnet.snowtrace.io'), null);
+  assert.throws(() => apply(initial, { type: 'transfer', from: 0, to: 1, amount: units('1'), concept: 'Aporte', intercompany: { kind: 'contribution', rateBps: 500 } }), /tipo de operación/);
+  assert.throws(() => parseRateBps('100,01'), /100%/);
 });

@@ -1,12 +1,14 @@
+import { isIntercompanyTerms, type IntercompanyTerms } from "./intercompany.ts";
+
 /** Local simulation of TreasuryVault.sol. Amounts use the token's 18 decimals. */
 export const UNIT = BigInt("1000000000000000000");
 const ZERO = BigInt(0);
 export const RAIL_STORAGE_KEY = "fluuix-treasury-rail-v1";
 export type Operativa = { id: number; nombre: string; saldo: string; minimo: string; objetivo: string; activa: boolean };
-export type RailEvent = { id: string; tipo: "Depósito" | "Transferencia interna" | "Rebalanceo" | "Pago" | "Pago en lote" | "Operativa creada" | "Umbrales actualizados"; desde: string; hacia: string; monto: string; concepto: string; fecha: string; cantidad?: number; recipients?: Recipient[] };
+export type RailEvent = { id: string; tipo: "Depósito" | "Transferencia interna" | "Rebalanceo" | "Pago" | "Pago en lote" | "Operativa creada" | "Umbrales actualizados"; desde: string; hacia: string; monto: string; concepto: string; fecha: string; cantidad?: number; recipients?: Recipient[]; intercompany?: IntercompanyTerms; txHash?: string };
 export type RailState = { version: 1; operativas: Operativa[]; totalMovidoInterno: string; totalPagado: string; walletBalance: string; events: RailEvent[] };
 export type Recipient = { nombre: string; wallet: string; monto: string };
-export type RailAction = { type: "deposit"; id: number; amount: string } | { type: "transfer"; from: number; to: number; amount: string; concept: string } | { type: "rebalance"; id?: number } | { type: "batch"; from: number; recipients: Recipient[]; concept: string } | { type: "create"; name: string; minimum: string; target: string } | { type: "thresholds"; id: number; minimum: string; target: string } | { type: "faucet" };
+export type RailAction = { type: "deposit"; id: number; amount: string } | { type: "transfer"; from: number; to: number; amount: string; concept: string; intercompany?: IntercompanyTerms } | { type: "rebalance"; id?: number } | { type: "batch"; from: number; recipients: Recipient[]; concept: string } | { type: "create"; name: string; minimum: string; target: string } | { type: "thresholds"; id: number; minimum: string; target: string } | { type: "faucet" };
 
 export function parseArgt(raw: string, allowZero = false): string {
   const value = raw.trim();
@@ -45,7 +47,7 @@ export function isRailState(value: unknown): value is RailState {
   if (!value || typeof value!=="object") return false;
   const s=value as RailState;
   const amount=(v: unknown)=>typeof v==="string" && /^\d{1,40}$/.test(v);
-  return s.version===1 && [s.walletBalance,s.totalMovidoInterno,s.totalPagado].every(amount) && Array.isArray(s.operativas) && s.operativas.length>0 && s.operativas.every((o,i)=>o && o.id===i && typeof o.nombre==="string" && typeof o.activa==="boolean" && [o.saldo,o.minimo,o.objetivo].every(amount) && BigInt(o.objetivo)>=BigInt(o.minimo)) && Array.isArray(s.events) && s.events.every(e=>e && typeof e.id==="string" && typeof e.tipo==="string" && typeof e.desde==="string" && typeof e.hacia==="string" && typeof e.concepto==="string" && amount(e.monto) && !Number.isNaN(Date.parse(e.fecha)));
+  return s.version===1 && [s.walletBalance,s.totalMovidoInterno,s.totalPagado].every(amount) && Array.isArray(s.operativas) && s.operativas.length>0 && s.operativas.every((o,i)=>o && o.id===i && typeof o.nombre==="string" && typeof o.activa==="boolean" && [o.saldo,o.minimo,o.objetivo].every(amount) && BigInt(o.objetivo)>=BigInt(o.minimo)) && Array.isArray(s.events) && s.events.every(e=>e && typeof e.id==="string" && typeof e.tipo==="string" && typeof e.desde==="string" && typeof e.hacia==="string" && typeof e.concepto==="string" && amount(e.monto) && (e.intercompany===undefined || isIntercompanyTerms(e.intercompany)) && !Number.isNaN(Date.parse(e.fecha)));
 }
 export function applyRailAction(current: RailState, action: RailAction, now = new Date().toISOString()): { state: RailState; message: string } {
   const state=structuredClone(current);
@@ -66,8 +68,9 @@ export function applyRailAction(current: RailState, action: RailAction, now = ne
     const amount=positive(action.amount);const target=op(action.id);if(amount>BigInt(state.walletBalance))throw new Error("No tenés suficientes ARGt de prueba en la wallet.");
     state.walletBalance=(BigInt(state.walletBalance)-amount).toString();target.saldo=(BigInt(target.saldo)+amount).toString();emit({tipo:"Depósito",desde:"Wallet de prueba",hacia:target.nombre,monto:action.amount,concepto:"Ingreso de ARGt al grupo"});message=`Depositaste ${formatArgt(action.amount)} ARGt en ${target.nombre}.`;
   } else if(action.type==="transfer"){
+    if(action.intercompany!==undefined&&!isIntercompanyTerms(action.intercompany))throw new Error("Revisá el tipo de operación y la tasa del préstamo.");
     if(action.from===action.to)throw new Error("Elegí dos operativas distintas.");if(!action.concept.trim())throw new Error("Agregá el concepto contable del movimiento.");
-    const amount=positive(action.amount);const target=op(action.to);const source=debit(action.from,amount);target.saldo=(BigInt(target.saldo)+amount).toString();state.totalMovidoInterno=(BigInt(state.totalMovidoInterno)+amount).toString();emit({tipo:"Transferencia interna",desde:source.nombre,hacia:target.nombre,monto:action.amount,concepto:action.concept.trim()});message="Movimiento interno registrado. La caja total del grupo se mantiene.";
+    const amount=positive(action.amount);const target=op(action.to);const source=debit(action.from,amount);target.saldo=(BigInt(target.saldo)+amount).toString();state.totalMovidoInterno=(BigInt(state.totalMovidoInterno)+amount).toString();emit({tipo:"Transferencia interna",desde:source.nombre,hacia:target.nombre,monto:action.amount,concepto:action.concept.trim(),intercompany:action.intercompany});message="Movimiento interno registrado. La caja total del grupo se mantiene.";
   } else if(action.type==="rebalance"){
     const ids=action.id===undefined?state.operativas.filter(o=>o.id!==0&&o.activa).map(o=>o.id):[action.id];const moved=ids.reduce((sum,id)=>sum+rebalance(id),ZERO);
     message=moved>ZERO?`Se redistribuyeron ${formatArgt(moved.toString())} ARGt desde la caja central.`:state.operativas.some(o=>o.id>0&&BigInt(o.saldo)<BigInt(o.minimo))?"La caja central no tiene fondos para reponer las operativas.":"Todas las operativas están por encima de su mínimo. No hubo movimientos.";

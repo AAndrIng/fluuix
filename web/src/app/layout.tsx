@@ -4,6 +4,7 @@ import "./globals.css";
 import "./fluuix.css";
 import "./demo.css";
 import "./rail.css";
+import "./intercompany.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Fluuix · Treasury Rail — Muchas empresas. Una sola caja.",
-  description: "La tesorería de todo tu grupo en pesos digitales. Explorá caja unificada, rebalanceo por operativa y pagos en lote con ARGt en la demo de Fluuix.",
+  description: "La tesorería de todo tu grupo en pesos digitales. Mové capital entre empresas del grupo en ARGt, registrá préstamos y aportes intercompany y explorá recomendaciones para la caja ociosa.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

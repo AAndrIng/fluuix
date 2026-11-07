@@ -9,16 +9,17 @@ npm install
 npm run dev
 ```
 
-Rutas: `/`, `/dashboard`, `/mover`, `/pagos`, `/operativas`, `/depositar`. `/app` conserva el acceso anterior al dashboard; `/comparar` explica que la privacidad pasa al roadmap.
+Rutas: `/`, `/dashboard`, `/mover`, `/pagos`, `/operativas`, `/depositar`, `/agente`. `/app` conserva el acceso anterior al dashboard; `/comparar` explica que la privacidad pasa al roadmap.
 
 ## Guion de demo
 
 1. La caja central comienza con 10.000.000 ARGt simulados; las tres operativas, en cero. Hay otros 10.000.000 disponibles en la wallet de prueba para depositar.
 2. Rebalancear todo distribuye 3.000.000 a Palermo, 2.000.000 a Belgrano y 1.000.000 a Distribuidora. Quedan 4.000.000 en la central.
-3. Mover 500.000 de Palermo a Distribuidora con concepto Préstamo intercompany.
-4. Pagar desde Palermo el lote de tres empleados de 600.000 cada uno. El saldo baja a 700.000, bajo el mínimo de 1.000.000; se reponen 2.300.000 desde la central hasta el objetivo de 3.000.000.
-5. Volver al dashboard: caja total 8.200.000, total pagado 1.800.000, volumen interno 8.800.000 y referencia bancaria estimada 105.600 pesos.
+3. Mover 500.000 de Palermo a Distribuidora como préstamo al 12% TNA. El registro muestra capital y condiciones; la tasa se guarda como dato y no devenga intereses en la demo.
+4. Pagar desde Palermo el lote de tres proveedores de 600.000 cada uno. El saldo baja a 700.000, bajo el mínimo de 1.000.000; se reponen 2.300.000 desde la central hasta el objetivo de 3.000.000.
+5. Volver al dashboard: caja total 8.200.000, total pagado 1.800.000 y volumen interno 8.800.000.
 6. Revisar el detalle de pagos y exportar movimientos. Se puede importar CSV, crear operativas y editar umbrales.
+7. En Agente de tesorería, evaluar mercados con la política inicial. Cambiar la tasa objetivo o el riesgo y revisar el log. Los mercados, las tasas y Belo son simulados.
 
 La persistencia es localStorage y no tiene autenticación: solo es una demo. Reiniciar vuelve al escenario inicial. No se conectan wallets, no hay cifrado, no se firman operaciones ni se generan hashes. La fuente de configuración está en `src/lib/config.ts`; `NEXT_PUBLIC_MODE=chain` muestra explícitamente que falta el adaptador y no convierte la simulación en una operación real.
 
