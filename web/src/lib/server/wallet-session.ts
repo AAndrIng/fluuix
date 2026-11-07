@@ -1,7 +1,7 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import type { NextRequest, NextResponse } from "next/server";
 import { isAddress, verifyMessage, type Address, type Hex } from "viem";
-import { consumeChallenge } from "./intercompany-db";
+import { consumeChallenge, isSessionRevoked, revokeSession } from "./intercompany-db";
 import { requireTreasurer, vaultSettings } from "./fuji";
 import { ApiError, appOrigin, json } from "./http";
 
@@ -24,14 +24,22 @@ function encode(credential: Credential) {
 }
 
 function decode(token: string | undefined, type: Credential["type"], vault: Address, origin: string): Credential | null {
-  if (!token || !/^[\w-]+\.[\w-]+$/.test(token)) return null;
+  if (!token || token.length > 4096 || !/^[\w-]+\.[\w-]{43}$/.test(token)) return null;
   const [payload, signature] = token.split(".");
   const supplied = Buffer.from(signature, "base64url");
   const expected = mac(payload);
   if (expected.length !== supplied.length || !timingSafeEqual(supplied, expected)) return null;
-  const credential = JSON.parse(Buffer.from(payload, "base64url").toString()) as Credential;
-  return credential.type === type && credential.vault === vault && credential.origin === origin &&
-    credential.expiresAt > Date.now() && isAddress(credential.wallet) ? credential : null;
+  // El HMAC autentica el contenido; el esquema evita aceptar credenciales malformadas.
+  try {
+    const credential = JSON.parse(Buffer.from(payload, "base64url").toString()) as Partial<Credential> | null;
+    if (!credential || typeof credential !== "object" || credential.type !== type ||
+        credential.vault !== vault || credential.origin !== origin ||
+        typeof credential.expiresAt !== "number" || !Number.isSafeInteger(credential.expiresAt) ||
+        credential.expiresAt <= Date.now() || typeof credential.wallet !== "string" ||
+        !isAddress(credential.wallet) || typeof credential.nonce !== "string" ||
+        !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(credential.nonce)) return null;
+    return credential as Credential;
+  } catch { return null; }
 }
 
 function setCookie(response: NextResponse, origin: string, name: string, value: string, maxAge: number) {
@@ -88,17 +96,23 @@ export async function startOrVerifySession(request: NextRequest, body: Record<st
 }
 
 export async function authorize(request: NextRequest) {
-  // Read request cookies first to keep the authenticated GET request-time only.
+  // Leer cookies primero: esta respuesta autenticada se evalúa en cada solicitud.
   const cookie = request.cookies.get(sessionCookie)?.value;
   const settings = vaultSettings();
   const session = decode(cookie, "session", settings.vault, appOrigin(request));
   if (!session) throw new ApiError(401, "Conectá la wallet del tesorero para acceder al registro.");
+  // Una copia de la cookie deja de servir después del cierre de sesión.
+  if (await isSessionRevoked(session.nonce)) throw new ApiError(401, "La sesión fue cerrada. Conectá la wallet de nuevo.");
   await requireTreasurer(settings.vault, session.wallet);
   return { ...settings, wallet: session.wallet };
 }
 
-export function closeSession(request: NextRequest) {
+export async function closeSession(request: NextRequest) {
   const origin = appOrigin(request);
+  const { vault } = vaultSettings();
+  const session = decode(request.cookies.get(sessionCookie)?.value, "session", vault, origin);
+  // Persistir antes de responder: si Postgres falla, no informar un cierre exitoso.
+  if (session) await revokeSession(session.nonce, session.expiresAt);
   const response = json({ ok: true });
   setCookie(response, origin, challengeCookie, "", 0);
   setCookie(response, origin, sessionCookie, "", 0);

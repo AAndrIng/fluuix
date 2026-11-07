@@ -23,7 +23,7 @@ let pool: Pool | undefined;
 
 export function database() {
   const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) throw new Error("DATABASE_URL is missing");
+  if (!connectionString) throw new Error("Falta configurar DATABASE_URL");
   return pool ??= new Pool({ connectionString, max: 3, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10000 });
 }
 
@@ -94,4 +94,24 @@ export async function consumeChallenge(nonce: string, expiresAt: number) {
     [nonce, new Date(expiresAt)],
   );
   return result.rowCount === 1;
+}
+
+/** Consulta compartida entre instancias; no depende de la memoria de un proceso. */
+export async function isSessionRevoked(nonce: string): Promise<boolean> {
+  const result = await database().query(
+    "SELECT 1 FROM intercompany_revoked_sessions WHERE nonce = $1 AND expires_at > now() LIMIT 1",
+    [nonce],
+  );
+  return result.rows.length > 0;
+}
+
+/** Revocación idempotente: almacena el identificador aleatorio, nunca la cookie. */
+export async function revokeSession(nonce: string, expiresAt: number): Promise<void> {
+  await database().query("DELETE FROM intercompany_revoked_sessions WHERE expires_at <= now()");
+  await database().query(
+    `INSERT INTO intercompany_revoked_sessions (nonce, expires_at) VALUES ($1,$2)
+     ON CONFLICT (nonce) DO UPDATE
+     SET expires_at = GREATEST(intercompany_revoked_sessions.expires_at, EXCLUDED.expires_at)`,
+    [nonce, new Date(expiresAt)],
+  );
 }

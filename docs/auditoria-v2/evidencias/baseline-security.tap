@@ -1,0 +1,439 @@
+TAP version 13
+# Subtest: HTTP: JSON válido
+ok 1 - HTTP: JSON válido
+  ---
+  duration_ms: 71.268964
+  type: 'test'
+  ...
+# Subtest: HTTP: array rechazado
+ok 2 - HTTP: array rechazado
+  ---
+  duration_ms: 10.348016
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON malformado
+ok 3 - HTTP: JSON malformado
+  ---
+  duration_ms: 11.185509
+  type: 'test'
+  ...
+# Subtest: HTTP: texto no JSON
+ok 4 - HTTP: texto no JSON
+  ---
+  duration_ms: 7.185199
+  type: 'test'
+  ...
+# Subtest: HTTP: origen ajeno
+ok 5 - HTTP: origen ajeno
+  ---
+  duration_ms: 7.570221
+  type: 'test'
+  ...
+# Subtest: HTTP: origen null
+ok 6 - HTTP: origen null
+  ---
+  duration_ms: 6.38502
+  type: 'test'
+  ...
+# Subtest: HTTP: origen ausente
+not ok 7 - HTTP: origen ausente
+  ---
+  duration_ms: 8.784945
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:98:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: Fetch Metadata cross-site
+not ok 8 - HTTP: Fetch Metadata cross-site
+  ---
+  duration_ms: 6.703111
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:98:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: 8193 bytes ASCII
+ok 9 - HTTP: 8193 bytes ASCII
+  ---
+  duration_ms: 9.677923
+  type: 'test'
+  ...
+# Subtest: HTTP: límite exacto de 8192 bytes
+ok 10 - HTTP: límite exacto de 8192 bytes
+  ---
+  duration_ms: 8.708129
+  type: 'test'
+  ...
+# Subtest: HTTP: UTF-8 supera bytes aunque no caracteres
+not ok 11 - HTTP: UTF-8 supera bytes aunque no caracteres
+  ---
+  duration_ms: 5.074712
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:98:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: Content-Length incompatible
+not ok 12 - HTTP: Content-Length incompatible
+  ---
+  duration_ms: 5.325361
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:98:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: cuerpo comprimido no admitido
+not ok 13 - HTTP: cuerpo comprimido no admitido
+  ---
+  duration_ms: 4.372593
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:98:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: MIME sin distinción de mayúsculas
+not ok 14 - HTTP: MIME sin distinción de mayúsculas
+  ---
+  duration_ms: 3.9997
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:96:58'
+  failureType: 'testCodeFailure'
+  error: 'Enviá la solicitud como JSON.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.readJson (/mnt/data/work-fluuix/source/fluuix-main/web/src/lib/server/http.ts:39:15)
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:99:41)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: Content-Length excesivo se rechaza sin consumir el cuerpo
+not ok 15 - HTTP: Content-Length excesivo se rechaza sin consumir el cuerpo
+  ---
+  duration_ms: 9.064547
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:106:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP: lectura por fragmentos se corta antes de consumir el resto
+not ok 16 - HTTP: lectura por fragmentos se corta antes de consumir el resto
+  ---
+  duration_ms: 5.414265
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:109:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    4 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 4
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:116:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN ausente en producción
+not ok 17 - Configuración: rechaza APP_ORIGIN ausente en producción
+  ---
+  duration_ms: 4.430881
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:120:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:122:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN HTTP remoto en producción
+not ok 18 - Configuración: rechaza APP_ORIGIN HTTP remoto en producción
+  ---
+  duration_ms: 4.86061
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:120:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:122:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN con ruta en producción
+not ok 19 - Configuración: rechaza APP_ORIGIN con ruta en producción
+  ---
+  duration_ms: 3.916284
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:120:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:122:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN con credenciales en producción
+not ok 20 - Configuración: rechaza APP_ORIGIN con credenciales en producción
+  ---
+  duration_ms: 4.050085
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:120:3'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:122:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Configuración: permite localhost HTTP en desarrollo
+ok 21 - Configuración: permite localhost HTTP en desarrollo
+  ---
+  duration_ms: 15.481712
+  type: 'test'
+  ...
+# Subtest: HTTP: vence la lectura de un emisor que no entrega datos
+ok 22 - HTTP: vence la lectura de un emisor que no entrega datos # SKIP
+  ---
+  duration_ms: 0.102995
+  type: 'test'
+  ...
+# Subtest: HTTP: rechazo de UTF-8 inválido
+ok 23 - HTTP: rechazo de UTF-8 inválido # SKIP
+  ---
+  duration_ms: 0.088053
+  type: 'test'
+  ...
+# Subtest: Sesión: acepta HMAC válido y sesión activa
+ok 24 - Sesión: acepta HMAC válido y sesión activa
+  ---
+  duration_ms: 29.556168
+  type: 'test'
+  ...
+# Subtest: Sesión: rechaza cookie alterada
+ok 25 - Sesión: rechaza cookie alterada
+  ---
+  duration_ms: 18.091378
+  type: 'test'
+  ...
+# Subtest: Sesión: rechaza credencial vencida
+ok 26 - Sesión: rechaza credencial vencida
+  ---
+  duration_ms: 11.277448
+  type: 'test'
+  ...
+# Subtest: Sesión: logout borra ambas cookies
+ok 27 - Sesión: logout borra ambas cookies
+  ---
+  duration_ms: 11.236457
+  type: 'test'
+  ...
+# Subtest: Sesión: una copia del token no sirve después de logout
+not ok 28 - Sesión: una copia del token no sirve después de logout
+  ---
+  duration_ms: 11.677824
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:189:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:193:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Sesión: falla cerrada si no se puede consultar revocación
+not ok 29 - Sesión: falla cerrada si no se puede consultar revocación
+  ---
+  duration_ms: 10.911456
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:195:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:198:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Sesión: no informa logout exitoso si falla la revocación
+not ok 30 - Sesión: no informa logout exitoso si falla la revocación
+  ---
+  duration_ms: 12.540746
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:200:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:203:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Sesión: credencial firmada con esquema inválido se rechaza
+not ok 31 - Sesión: credencial firmada con esquema inválido se rechaza
+  ---
+  duration_ms: 16.630923
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:205:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:207:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Sesión: JSON autenticado malformado no genera error interno
+not ok 32 - Sesión: JSON autenticado malformado no genera error interno
+  ---
+  duration_ms: 9.294674
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:209:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The validation function is expected to return "true". Received false
+    
+    Caught error:
+    
+    SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:211:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Sesión: el desafío de firma se consume una única vez
+ok 33 - Sesión: el desafío de firma se consume una única vez
+  ---
+  duration_ms: 9.514287
+  type: 'test'
+  ...
+# Subtest: Cabeceras: niega iframe sin bloquear scripts de Next.js
+not ok 34 - Cabeceras: niega iframe sin bloquear scripts de Next.js
+  ---
+  duration_ms: 2.454706
+  type: 'test'
+  location: '/mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:224:1'
+  failureType: 'testCodeFailure'
+  error: 'config.headers is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/work-fluuix/audit-fix/web/scripts/security-audit.test.mjs:226:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Postgres: revocación usa parámetros y operación idempotente
+ok 35 - Postgres: revocación usa parámetros y operación idempotente # SKIP
+  ---
+  duration_ms: 0.064197
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 14
+# fail 18
+# cancelled 0
+# skipped 3
+# todo 0
+# duration_ms 747.31539

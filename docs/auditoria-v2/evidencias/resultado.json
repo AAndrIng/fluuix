@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-11-07",
+  "snapshot_declarado": "6db42cb9cca3923d98d11e4f99eada280b06a30f",
+  "node": "22.16.0",
+  "typescript_transpilador_laboratorio": "5.8.3",
+  "typescript_en_lock": "5.9.3",
+  "original": {
+    "aprobadas": 43,
+    "fallidas": 35,
+    "omitidas": 3
+  },
+  "corregido": {
+    "aprobadas": 81,
+    "fallidas": 0,
+    "omitidas": 0
+  },
+  "transpilacion_aislada_archivos": 37,
+  "typecheck_modulos_puros": {
+    "archivos": 4,
+    "exit_code": 0
+  },
+  "instalacion_completa": "no completada: EAI_AGAIN / ENOTCACHED",
+  "build_integral": "no ejecutado",
+  "npm_audit": "no ejecutado",
+  "postgres_real": "no probado",
+  "wallet_rpc_blockchain_reales": "no probados",
+  "pr_publicado": false,
+  "despliegue": false
+}

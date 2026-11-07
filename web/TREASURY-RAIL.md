@@ -143,3 +143,23 @@ El backend revalida los saldos de Fuji antes de firmar. El contrato actual verif
 La API firma el desafío de sesión con un nonce de un solo uso. La wallet firma el mensaje de acceso y luego la transacción. Postgres guarda la tasa y la nota, y la transacción publica la referencia `FLX:<uuid>`. La API verifica la red, el emisor, el vault, los argumentos y el evento antes de confirmar. Si la conciliación se interrumpe, pegá el hash de la wallet en **Conciliar transacción**.
 
 Las rutas disponibles son `POST /api/intercompany/session`, `GET /api/intercompany`, `POST /api/intercompany` y `POST /api/intercompany/:id/confirmacion`. La preparación reutiliza un UUID de operación para reintentos con los mismos datos. El contrato actual permite que una wallet firme dos transacciones distintas con la misma referencia. Para automatizar la firma desde un ERP hace falta bloquear referencias duplicadas en el vault. Depósitos, pagos, rebalanceo y el agente se prueban en modo demo.
+
+
+## Actualización de seguridad audit-fix v2
+
+Para esta versión aplicar **003_revoked_sessions.sql** antes de desplegar el backend,
+además de 001 y, si corresponde, 002. La migración 002 sigue siendo la automatización.
+Configurar `APP_ORIGIN` HTTPS exacto en producción. El plazo de pitch de cinco segundos
+requiere `TREASURY_AUTOMATION_ALLOW_DEMO=true` explícito en el servidor y un vault exclusivo
+de prueba; el panel comienza en modo normal. El modo normal también usa señales de demo.
+
+El circuito manual pide la firma de la wallet del tesorero. El circuito automático nuevo
+firma con la wallet del servidor: no afirmar que cada operación automática tiene firma
+humana. Cerrar sesión revoca la cookie, pero no cancela propuestas existentes ni retiros
+ya emitidos. La comparación del hash protege contra discrepancias, no contra control total
+malicioso de la base o de la clave.
+
+Ver [informe](../docs/auditoria-v2/INFORME.md) y
+[aplicación y validación](../docs/auditoria-v2/APLICACION-Y-VALIDACION.md).
+Ejecutar `npm ci --ignore-scripts`, `npm run check` y las pruebas de integración antes del merge.
+Esta entrega no acredita producción bancaria ni seguridad del contrato no incluido.

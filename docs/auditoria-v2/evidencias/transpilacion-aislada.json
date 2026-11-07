@@ -1,0 +1,6 @@
+{
+  "typescript": "5.8.3",
+  "archivos": 37,
+  "errores": [],
+  "limite": "Transpilación aislada: no comprueba tipos entre módulos ni sustituye next build."
+}

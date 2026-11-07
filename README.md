@@ -23,5 +23,25 @@ Proyecto para **HackaTwin** (7/11/2026, Digital House, Buenos Aires) — track S
 ```
 docs/        documentación de producto, negocio y contexto del evento
 web/         frontend (Next.js)
-backend/     backend y smart contracts
+web/src/lib/server/  lógica del backend Next.js
+web/db/              migraciones de Postgres
 ```
+
+
+## Estado y revisión de seguridad del snapshot
+
+El archivo entregado con referencia declarada `6db42cb…` incluye el backend de intercompany
+y automatización de préstamos de prueba en Fuji. No incluye fuentes Solidity ni un backend
+independiente. El circuito automático usa una wallet del servidor; la actividad comercial
+es simulada y la predicción del modelo es opcional. La visión del producto no implica que
+todo el roadmap esté implementado.
+
+El paquete audit-fix v2 añade controles y pruebas, sin cambiar dependencias. **No está
+aprobado para producción bancaria ni para fondos reales.**
+
+- [Informe y alcance](docs/auditoria-v2/INFORME.md).
+- [Aplicación, validación y rollback](docs/auditoria-v2/APLICACION-Y-VALIDACION.md).
+- [Criterios para calificar](docs/auditoria-v2/CALIFICACION.md).
+- [Texto del PR de borrador](docs/auditoria-v2/PR-audit-fix.md).
+
+Importante: la migración de revocación es **003**. No sobrescribir la 002 de automatización.

@@ -19,6 +19,19 @@ export function automationEnabled(vault: string) {
   return Boolean(vault) && process.env.TREASURY_AUTOMATION_VAULT?.trim().toLowerCase() === vault.toLowerCase();
 }
 
+/** El plazo de pitch solo se habilita mediante configuración del servidor. */
+export function automationDemoAllowed() {
+  return process.env.TREASURY_AUTOMATION_ALLOW_DEMO === "true";
+}
+
+function requireAutomationMode(vault: string, mode: unknown) {
+  if (!automationEnabled(vault)) throw new ApiError(404, "La automatización está desactivada para este vault.");
+  if (mode !== "demo" && mode !== "normal") throw new ApiError(400, "El modo de automatización es inválido.");
+  if (mode === "demo" && !automationDemoAllowed()) {
+    throw new ApiError(403, "El modo pitch requiere habilitación explícita del servidor y un vault de prueba en Fuji.");
+  }
+}
+
 function signer() {
   const key = process.env.TREASURY_AUTOMATION_PRIVATE_KEY?.trim();
   if (!key || !/^0x[\da-fA-F]{64}$/.test(key)) throw new ApiError(503, "Configurá la clave de la wallet automática de Fuji.");
@@ -59,6 +72,7 @@ export async function listRuns(vault: Address) {
 }
 
 export async function evaluateTreasury(access: Access, mode: AutomationMode, scenario: ActivityScenario) {
+  requireAutomationMode(access.vault, mode);
   const active = (await listRuns(access.vault)).find(run => run.status === "scheduled" || run.status === "submitted");
   if (active) return active;
 
@@ -111,7 +125,7 @@ export async function vetoRun(vault: Address, id: string) {
 async function prepareSignedRun(access: Access, run: RunRow) {
   const { vault } = access;
   const { id, decision: { loan, threshold } } = run;
-  if (!loan) throw new Error("Scheduled run has no loan");
+  if (!loan) throw new Error("La evaluación programada no contiene una propuesta de préstamo");
   const accounts = await readOperativas(access);
   if (!proposalStillValid(accounts, fundingReserves(), BigInt(threshold), loan)) {
     await database().query(`UPDATE treasury_automation_runs SET status = 'skipped', result = 'Los saldos cambiaron y la propuesta dejó de cumplir la política.'
@@ -127,7 +141,7 @@ async function prepareSignedRun(access: Access, run: RunRow) {
   const serialized = await account.signTransaction(request);
   const hash = keccak256(serialized);
 
-  // Only the transaction that wins this update can be broadcast. The ledger row commits with it.
+  // Solo se persiste la transacción que gana esta actualización, junto con su registro contable.
   await database().query(`WITH won AS (
     UPDATE treasury_automation_runs SET status = 'submitted', tx_hash = $3, signed_transaction = $4
     WHERE vault_address = $1 AND id = $2 AND status = 'scheduled' AND execute_at <= now()
@@ -141,8 +155,11 @@ async function prepareSignedRun(access: Access, run: RunRow) {
 
 export async function advanceRun(access: Access, id: string) {
   const { vault } = access;
+  if (!automationEnabled(vault)) throw new ApiError(404, "La automatización está desactivada para este vault.");
   let run = await findRun(vault, id);
   if (run.status === "scheduled") {
+    // También comprobar propuestas ya persistidas: la configuración puede cambiar.
+    requireAutomationMode(vault, run.decision.mode);
     const due = await database().query("SELECT 1 FROM treasury_automation_runs WHERE id = $1 AND status = 'scheduled' AND execute_at <= now()", [id]);
     if (!due.rowCount) return toRun(await findRun(vault, id));
     run = await prepareSignedRun(access, run);
@@ -151,11 +168,16 @@ export async function advanceRun(access: Access, id: string) {
 
   const settlement = await confirmOperation(access, id, run.tx_hash);
   if (settlement.pending) {
+    requireAutomationMode(vault, run.decision.mode);
     const hash = run.tx_hash;
+    // Evitar emitir bytes dañados que no correspondan al comprobante almacenado.
+    if (keccak256(run.signed_transaction).toLowerCase() !== hash.toLowerCase()) {
+      throw new ApiError(409, "La transacción firmada no coincide con el hash registrado. No se emitió.");
+    }
     try {
       await fuji.sendRawTransaction({ serializedTransaction: run.signed_transaction });
     } catch (error) {
-      // A second tab or an earlier RPC attempt may already have sent these same bytes.
+      // Otra pestaña o un intento anterior de RPC pueden haber enviado estos mismos bytes.
       if (!await fuji.getTransaction({ hash }).catch(() => null)) throw error;
     }
     return toRun(run);

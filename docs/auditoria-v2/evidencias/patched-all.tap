@@ -1,0 +1,512 @@
+
+> web@0.1.0 test
+> node --experimental-strip-types --test scripts/*.test.mjs
+
+TAP version 13
+# Subtest: Política: conserva una propuesta legítima de 1,5 mARGt
+ok 1 - Política: conserva una propuesta legítima de 1,5 mARGt
+  ---
+  duration_ms: 1.541752
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe cero
+ok 2 - Política: rechaza importe cero
+  ---
+  duration_ms: 0.282357
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe negativo
+ok 3 - Política: rechaza importe negativo
+  ---
+  duration_ms: 0.166813
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe no numérico
+ok 4 - Política: rechaza importe no numérico
+  ---
+  duration_ms: 0.118289
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe con ceros ambiguos
+ok 5 - Política: rechaza importe con ceros ambiguos
+  ---
+  duration_ms: 0.11262
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe excesivamente largo
+ok 6 - Política: rechaza importe excesivamente largo
+  ---
+  duration_ms: 0.113051
+  type: 'test'
+  ...
+# Subtest: Política: rechaza tasa distinta de la política
+ok 7 - Política: rechaza tasa distinta de la política
+  ---
+  duration_ms: 0.095635
+  type: 'test'
+  ...
+# Subtest: Política: no acepta cambiar Palermo por otra operativa
+ok 8 - Política: no acepta cambiar Palermo por otra operativa
+  ---
+  duration_ms: 0.186883
+  type: 'test'
+  ...
+# Subtest: Política: origen y destino no pueden coincidir
+ok 9 - Política: origen y destino no pueden coincidir
+  ---
+  duration_ms: 0.362248
+  type: 'test'
+  ...
+# Subtest: Política: no admite saldos negativos aunque alcancen el objetivo aparente
+ok 10 - Política: no admite saldos negativos aunque alcancen el objetivo aparente
+  ---
+  duration_ms: 0.523662
+  type: 'test'
+  ...
+# Subtest: Política: no admite IDs duplicados ni reservas negativas
+ok 11 - Política: no admite IDs duplicados ni reservas negativas
+  ---
+  duration_ms: 0.248766
+  type: 'test'
+  ...
+# Subtest: Política: umbral dentro de 25 a 100 centésimos y sin fracciones menores
+ok 12 - Política: umbral dentro de 25 a 100 centésimos y sin fracciones menores
+  ---
+  duration_ms: 0.164779
+  type: 'test'
+  ...
+# Subtest: Política: falla cerrado ante saldos corruptos o IDs inseguros
+ok 13 - Política: falla cerrado ante saldos corruptos o IDs inseguros
+  ---
+  duration_ms: 0.186933
+  type: 'test'
+  ...
+# Subtest: Política: mantiene el límite de 2 tokens y las reservas
+ok 14 - Política: mantiene el límite de 2 tokens y las reservas
+  ---
+  duration_ms: 0.193282
+  type: 'test'
+  ...
+# Subtest: Servidor: pitch requiere autorización explícita aunque el vault esté habilitado
+ok 15 - Servidor: pitch requiere autorización explícita aunque el vault esté habilitado
+  ---
+  duration_ms: 103.567206
+  type: 'test'
+  ...
+# Subtest: Servidor: habilitar pitch expresamente conserva la ventana de 5 segundos
+ok 16 - Servidor: habilitar pitch expresamente conserva la ventana de 5 segundos
+  ---
+  duration_ms: 97.438502
+  type: 'test'
+  ...
+# Subtest: Servidor: modo normal conserva 180 segundos y no firma al evaluar
+ok 17 - Servidor: modo normal conserva 180 segundos y no firma al evaluar
+  ---
+  duration_ms: 58.023978
+  type: 'test'
+  ...
+# Subtest: Servidor: la política se aplica también cuando se invoca el servicio sin la ruta
+ok 18 - Servidor: la política se aplica también cuando se invoca el servicio sin la ruta
+  ---
+  duration_ms: 65.89278
+  type: 'test'
+  ...
+# Subtest: Servidor: reutiliza la propuesta activa en lugar de registrar otra
+ok 19 - Servidor: reutiliza la propuesta activa en lugar de registrar otra
+  ---
+  duration_ms: 41.417168
+  type: 'test'
+  ...
+# Subtest: Servidor: no firma ni emite antes del vencimiento
+ok 20 - Servidor: no firma ni emite antes del vencimiento
+  ---
+  duration_ms: 44.965164
+  type: 'test'
+  ...
+# Subtest: Servidor: un veto dentro de la ventana impide la firma posterior
+ok 21 - Servidor: un veto dentro de la ventana impide la firma posterior
+  ---
+  duration_ms: 45.086458
+  type: 'test'
+  ...
+# Subtest: Servidor: no admite veto cuando finalizó el plazo
+ok 22 - Servidor: no admite veto cuando finalizó el plazo
+  ---
+  duration_ms: 39.418845
+  type: 'test'
+  ...
+# Subtest: Servidor: deshabilitar pitch bloquea una propuesta previamente programada
+ok 23 - Servidor: deshabilitar pitch bloquea una propuesta previamente programada
+  ---
+  duration_ms: 40.880758
+  type: 'test'
+  ...
+# Subtest: Servidor: no retransmite bytes preparados de pitch si se retiró su habilitación
+ok 24 - Servidor: no retransmite bytes preparados de pitch si se retiró su habilitación
+  ---
+  duration_ms: 54.375188
+  type: 'test'
+  ...
+# Subtest: Servidor: el bloqueo de pitch no impide conciliar una transacción ya confirmada
+ok 25 - Servidor: el bloqueo de pitch no impide conciliar una transacción ya confirmada
+  ---
+  duration_ms: 24.177882
+  type: 'test'
+  ...
+# Subtest: Servidor: un hash distinto de los bytes persistidos impide la emisión
+ok 26 - Servidor: un hash distinto de los bytes persistidos impide la emisión
+  ---
+  duration_ms: 35.991681
+  type: 'test'
+  ...
+# Subtest: Servidor: el recorrido normal firma, emite y luego concilia sin volver a firmar
+ok 27 - Servidor: el recorrido normal firma, emite y luego concilia sin volver a firmar
+  ---
+  duration_ms: 26.890265
+  type: 'test'
+  ...
+# Subtest: Servidor: saldos insuficientes en la revalidación descartan sin firmar
+ok 28 - Servidor: saldos insuficientes en la revalidación descartan sin firmar
+  ---
+  duration_ms: 22.560486
+  type: 'test'
+  ...
+# Subtest: Servidor: alterar la tasa persistida no autoriza una firma fuera de política
+ok 29 - Servidor: alterar la tasa persistida no autoriza una firma fuera de política
+  ---
+  duration_ms: 26.455447
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON válido
+ok 30 - HTTP: JSON válido
+  ---
+  duration_ms: 132.09176
+  type: 'test'
+  ...
+# Subtest: HTTP: array rechazado
+ok 31 - HTTP: array rechazado
+  ---
+  duration_ms: 35.856877
+  type: 'test'
+  ...
+# Subtest: HTTP: JSON malformado
+ok 32 - HTTP: JSON malformado
+  ---
+  duration_ms: 30.310819
+  type: 'test'
+  ...
+# Subtest: HTTP: texto no JSON
+ok 33 - HTTP: texto no JSON
+  ---
+  duration_ms: 24.092903
+  type: 'test'
+  ...
+# Subtest: HTTP: origen ajeno
+ok 34 - HTTP: origen ajeno
+  ---
+  duration_ms: 30.982845
+  type: 'test'
+  ...
+# Subtest: HTTP: origen null
+ok 35 - HTTP: origen null
+  ---
+  duration_ms: 28.858171
+  type: 'test'
+  ...
+# Subtest: HTTP: origen ausente
+ok 36 - HTTP: origen ausente
+  ---
+  duration_ms: 23.662863
+  type: 'test'
+  ...
+# Subtest: HTTP: Fetch Metadata cross-site
+ok 37 - HTTP: Fetch Metadata cross-site
+  ---
+  duration_ms: 13.332066
+  type: 'test'
+  ...
+# Subtest: HTTP: 8193 bytes ASCII
+ok 38 - HTTP: 8193 bytes ASCII
+  ---
+  duration_ms: 17.240349
+  type: 'test'
+  ...
+# Subtest: HTTP: límite exacto de 8192 bytes
+ok 39 - HTTP: límite exacto de 8192 bytes
+  ---
+  duration_ms: 17.810891
+  type: 'test'
+  ...
+# Subtest: HTTP: UTF-8 supera bytes aunque no caracteres
+ok 40 - HTTP: UTF-8 supera bytes aunque no caracteres
+  ---
+  duration_ms: 9.571658
+  type: 'test'
+  ...
+# Subtest: HTTP: Content-Length incompatible
+ok 41 - HTTP: Content-Length incompatible
+  ---
+  duration_ms: 32.357695
+  type: 'test'
+  ...
+# Subtest: HTTP: cuerpo comprimido no admitido
+ok 42 - HTTP: cuerpo comprimido no admitido
+  ---
+  duration_ms: 8.462891
+  type: 'test'
+  ...
+# Subtest: HTTP: MIME sin distinción de mayúsculas
+ok 43 - HTTP: MIME sin distinción de mayúsculas
+  ---
+  duration_ms: 8.608993
+  type: 'test'
+  ...
+# Subtest: HTTP: Content-Length excesivo se rechaza sin consumir el cuerpo
+ok 44 - HTTP: Content-Length excesivo se rechaza sin consumir el cuerpo
+  ---
+  duration_ms: 11.557191
+  type: 'test'
+  ...
+# Subtest: HTTP: lectura por fragmentos se corta antes de consumir el resto
+ok 45 - HTTP: lectura por fragmentos se corta antes de consumir el resto
+  ---
+  duration_ms: 13.957202
+  type: 'test'
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN ausente en producción
+ok 46 - Configuración: rechaza APP_ORIGIN ausente en producción
+  ---
+  duration_ms: 9.577477
+  type: 'test'
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN HTTP remoto en producción
+ok 47 - Configuración: rechaza APP_ORIGIN HTTP remoto en producción
+  ---
+  duration_ms: 37.655798
+  type: 'test'
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN con ruta en producción
+ok 48 - Configuración: rechaza APP_ORIGIN con ruta en producción
+  ---
+  duration_ms: 11.783395
+  type: 'test'
+  ...
+# Subtest: Configuración: rechaza APP_ORIGIN con credenciales en producción
+ok 49 - Configuración: rechaza APP_ORIGIN con credenciales en producción
+  ---
+  duration_ms: 22.073769
+  type: 'test'
+  ...
+# Subtest: Configuración: permite localhost HTTP en desarrollo
+ok 50 - Configuración: permite localhost HTTP en desarrollo
+  ---
+  duration_ms: 11.369337
+  type: 'test'
+  ...
+# Fallo de API intercompany Error 
+# Fallo de API intercompany Error 
+# Subtest: HTTP: vence la lectura de un emisor que no entrega datos
+ok 51 - HTTP: vence la lectura de un emisor que no entrega datos
+  ---
+  duration_ms: 27.377663
+  type: 'test'
+  ...
+# Subtest: HTTP: rechazo de UTF-8 inválido
+ok 52 - HTTP: rechazo de UTF-8 inválido
+  ---
+  duration_ms: 10.65775
+  type: 'test'
+  ...
+# Subtest: Sesión: acepta HMAC válido y sesión activa
+ok 53 - Sesión: acepta HMAC válido y sesión activa
+  ---
+  duration_ms: 35.362991
+  type: 'test'
+  ...
+# Subtest: Sesión: rechaza cookie alterada
+ok 54 - Sesión: rechaza cookie alterada
+  ---
+  duration_ms: 25.264636
+  type: 'test'
+  ...
+# Subtest: Sesión: rechaza credencial vencida
+ok 55 - Sesión: rechaza credencial vencida
+  ---
+  duration_ms: 23.930011
+  type: 'test'
+  ...
+# Subtest: Sesión: logout borra ambas cookies
+ok 56 - Sesión: logout borra ambas cookies
+  ---
+  duration_ms: 34.230106
+  type: 'test'
+  ...
+# Subtest: Sesión: una copia del token no sirve después de logout
+ok 57 - Sesión: una copia del token no sirve después de logout
+  ---
+  duration_ms: 20.562723
+  type: 'test'
+  ...
+# Subtest: Sesión: falla cerrada si no se puede consultar revocación
+ok 58 - Sesión: falla cerrada si no se puede consultar revocación
+  ---
+  duration_ms: 19.245843
+  type: 'test'
+  ...
+# Subtest: Sesión: no informa logout exitoso si falla la revocación
+ok 59 - Sesión: no informa logout exitoso si falla la revocación
+  ---
+  duration_ms: 21.298356
+  type: 'test'
+  ...
+# Subtest: Sesión: credencial firmada con esquema inválido se rechaza
+ok 60 - Sesión: credencial firmada con esquema inválido se rechaza
+  ---
+  duration_ms: 14.499511
+  type: 'test'
+  ...
+# Subtest: Sesión: JSON autenticado malformado no genera error interno
+ok 61 - Sesión: JSON autenticado malformado no genera error interno
+  ---
+  duration_ms: 27.748513
+  type: 'test'
+  ...
+# Subtest: Sesión: el desafío de firma se consume una única vez
+ok 62 - Sesión: el desafío de firma se consume una única vez
+  ---
+  duration_ms: 15.111067
+  type: 'test'
+  ...
+# Subtest: Cabeceras: niega iframe sin bloquear scripts de Next.js
+ok 63 - Cabeceras: niega iframe sin bloquear scripts de Next.js
+  ---
+  duration_ms: 9.201758
+  type: 'test'
+  ...
+# Subtest: Postgres: revocación usa parámetros y operación idempotente
+ok 64 - Postgres: revocación usa parámetros y operación idempotente
+  ---
+  duration_ms: 8.661402
+  type: 'test'
+  ...
+# (node:866) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:866) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///mnt/data/work-fluuix/audit-fix/web/src/lib/treasury-automation.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /mnt/data/work-fluuix/audit-fix/web/package.json.
+# Subtest: the pitch balance needs a preventive threshold to trigger the 1.5 mARGt loan
+ok 65 - the pitch balance needs a preventive threshold to trigger the 1.5 mARGt loan
+  ---
+  duration_ms: 1.740092
+  type: 'test'
+  ...
+# Subtest: fallback funding uses the greatest eligible surplus and preserves the reserve
+ok 66 - fallback funding uses the greatest eligible surplus and preserves the reserve
+  ---
+  duration_ms: 0.303219
+  type: 'test'
+  ...
+# Subtest: revalidation rejects recovered balances, overshooting the target, and depleted reserves
+ok 67 - revalidation rejects recovered balances, overshooting the target, and depleted reserves
+  ---
+  duration_ms: 0.366314
+  type: 'test'
+  ...
+# Subtest: preventive thresholds reject out-of-policy values and fall back when the model is unavailable
+ok 68 - preventive thresholds reject out-of-policy values and fall back when the model is unavailable
+  ---
+  duration_ms: 23.78016
+  type: 'test'
+  ...
+# Subtest: pitch mode produces the demo threshold without calling the model
+ok 69 - pitch mode produces the demo threshold without calling the model
+  ---
+  duration_ms: 0.227043
+  type: 'test'
+  ...
+# (node:896) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:896) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///mnt/data/work-fluuix/audit-fix/web/src/lib/intercompany.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /mnt/data/work-fluuix/audit-fix/web/package.json.
+# Subtest: rebalance redistributes in contract order and preserves group liquidity
+ok 70 - rebalance redistributes in contract order and preserves group liquidity
+  ---
+  duration_ms: 19.247214
+  type: 'test'
+  ...
+# Subtest: end-to-end transfer and payroll replenish only after payout
+ok 71 - end-to-end transfer and payroll replenish only after payout
+  ---
+  duration_ms: 1.823408
+  type: 'test'
+  ...
+# Subtest: partial replenishment exhausts central funds without creating money
+ok 72 - partial replenishment exhausts central funds without creating money
+  ---
+  duration_ms: 0.570914
+  type: 'test'
+  ...
+# Subtest: an operative exactly at its minimum is not replenished
+ok 73 - an operative exactly at its minimum is not replenished
+  ---
+  duration_ms: 0.222557
+  type: 'test'
+  ...
+# Subtest: internal transfer does not trigger automatic replenishment
+ok 74 - internal transfer does not trigger automatic replenishment
+  ---
+  duration_ms: 0.596722
+  type: 'test'
+  ...
+# Subtest: insufficient funds and invalid recipients revert the entire simulated action
+ok 75 - insufficient funds and invalid recipients revert the entire simulated action
+  ---
+  duration_ms: 0.72671
+  type: 'test'
+  ...
+# Subtest: deposits change group funds and wallet, but not internal volume or paid total
+ok 76 - deposits change group funds and wallet, but not internal volume or paid total
+  ---
+  duration_ms: 0.544243
+  type: 'test'
+  ...
+# Subtest: money parsing preserves 18 decimals and rejects ambiguous input
+ok 77 - money parsing preserves 18 decimals and rejects ambiguous input
+  ---
+  duration_ms: 0.324671
+  type: 'test'
+  ...
+# Subtest: CSV import handles quoted commas and rejects invalid columns and oversized batches
+ok 78 - CSV import handles quoted commas and rejects invalid columns and oversized batches
+  ---
+  duration_ms: 1.219154
+  type: 'test'
+  ...
+# Subtest: thresholds cannot mutate central rules and must have target >= minimum
+ok 79 - thresholds cannot mutate central rules and must have target >= minimum
+  ---
+  duration_ms: 0.669012
+  type: 'test'
+  ...
+# Subtest: dates render deterministically in Argentina
+ok 80 - dates render deterministically in Argentina
+  ---
+  duration_ms: 4.855235
+  type: 'test'
+  ...
+# Subtest: intercompany loan terms persist without changing the principal or accruing interest
+ok 81 - intercompany loan terms persist without changing the principal or accruing interest
+  ---
+  duration_ms: 0.664005
+  type: 'test'
+  ...
+1..81
+# tests 81
+# suites 0
+# pass 81
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1380.273478
