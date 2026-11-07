@@ -33,7 +33,7 @@ El simulador exige nombre, wallet válida no nula y monto positivo para cada des
 
 La calculadora usa volumen interno × 1,2% como escenario bruto de referencia bancaria. No determina que una transferencia con stablecoins esté exenta, ni calcula ahorro fiscal neto, comisiones, rampas, exenciones o pagos a cuenta. Fuente: artículo 7 del Decreto 380/2001, biblioteca ARCA. La aplicación enlaza la fuente y describe estos límites.
 
-Privacidad eERC, KYB, inversión vía protocolos y flujo predictivo quedan como roadmap. El contrato suministrado no implementa aprobaciones 2/2, así que fueron retiradas de la demo.
+Privacidad eERC, KYB e inversión vía protocolos quedan en el roadmap. El flujo predictivo en Fuji usa señales operativas de demo.
 
 ## Verificación
 
@@ -126,7 +126,19 @@ Subí a GitHub la rama que contiene el backend, incluida la carpeta `web/src/app
 | «No se pudo consultar Fuji o Postgres» | Logs de Vercel, cadena del RPC, URI del pooler con la contraseña correcta y migración aplicada. |
 | Falta saldo para mover | Saldo interno de origen en `verOperativas()` y AVAX de prueba en la wallet para pagar gas. |
 
-Para la entrega guardá el enlace al **vault verificado**, el **hash de un movimiento iniciado desde la web** y la **URL de Vercel**. El flujo real implementado cubre intercompany. La pantalla del agente sigue mostrando recomendaciones simuladas y la firma manual del tesorero corresponde a la demo Blockchain.
+Para la entrega guardá el enlace al **vault verificado**, el **hash de un movimiento iniciado desde la web** y la **URL de Vercel**.
+
+## Demo del préstamo autónomo en Fuji
+
+1. En **Supabase → SQL Editor**, ejecutá [002_treasury_automation.sql](db/002_treasury_automation.sql) después de la primera migración.
+2. Creá una cuenta de wallet dedicada a la demo y mandale AVAX de Fuji para gas. En **Remix → Deployed Contracts → TreasuryVault**, conectá la cuenta administradora. Copiá el resultado de `TESORERO()` y ejecutá `grantRole(bytes32 role, address account)` con ese rol y la dirección pública de la cuenta automática. Verificá que `hasRole` devuelva `true`. Ese rol también habilita pagos y retiros, por lo que la cuenta se usa solo con el vault de prueba y mARGt.
+3. En **Vercel → Settings → Environment Variables → Production**, agregá `TREASURY_AUTOMATION_VAULT` con la misma dirección de Fuji que `NEXT_PUBLIC_VAULT_ADDRESS`. Agregá `TREASURY_AUTOMATION_PRIVATE_KEY` como secreto de servidor con la clave de la cuenta automática en formato `0x…`. En MetaMask la encontrás en **Fluuix Bot → ⋮ → Account details → Private key**. Hacé redeploy. Para probar en local, configurá esas dos variables en `.env.local`. `OPENAI_API_KEY` es opcional para el modo normal. El modo pitch usa un umbral simulado de 0,75 mARGt ante el pico de actividad.
+4. Verificá en `/dashboard` que Caja central tenga **9,5 mARGt** y Palermo, ID `1`, tenga **0,5 mARGt**. Abrí sesión con tu wallet de tesorero antes de presentar. Elegí **Escenario de pitch · 5 segundos** y **Pico de tráfico y ventas**. Tocá **Evaluar tesorería** y dejá la pestaña abierta. Mostrá el préstamo al **5% TNA**, los saldos **8 / 2 mARGt** y el enlace a Snowtrace. Grabá esa ejecución como respaldo.
+5. Para repetir, devolvé **1,5 mARGt** desde Palermo a Caja central con `/mover`. Para ensayar el veto con los mismos saldos y el umbral simulado, repetí en **Escenario de pitch** y tocá **Vetar** dentro de los cinco segundos. Verificá que los saldos sigan iguales.
+
+**Guion de demo.** Palermo muestra señales de mayor actividad → el escenario muestra un umbral preventivo y lo explica → Fluuix ejecuta y registra el préstamo en Avalanche Fuji. Tráfico, ventas y umbral preventivo son simulados. La pantalla `/agente` muestra la simulación de colocación del excedente y de Belo. Crédito con colateral, comercio exterior y firma automática de contratos quedan en el roadmap.
+
+El backend revalida los saldos de Fuji antes de firmar. El contrato actual verifica saldo suficiente al ejecutar y los umbrales de reserva son una política de la app. El registro conciliado guarda el capital, la tasa y el comprobante. La tasa es un dato contable de la demo.
 
 La API firma el desafío de sesión con un nonce de un solo uso. La wallet firma el mensaje de acceso y luego la transacción. Postgres guarda la tasa y la nota, y la transacción publica la referencia `FLX:<uuid>`. La API verifica la red, el emisor, el vault, los argumentos y el evento antes de confirmar. Si la conciliación se interrumpe, pegá el hash de la wallet en **Conciliar transacción**.
 

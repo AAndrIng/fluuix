@@ -42,3 +42,13 @@
   font-size: 12px;
   overflow-wrap: anywhere;
 }
+.treasury-automation { display: grid; gap: 18px; margin-bottom: 28px; }
+.treasury-signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; }
+.treasury-signals > div { display: grid; gap: 5px; padding: 14px; border: 1px solid #dfe7d3; border-radius: 8px; }
+.treasury-signals span, .treasury-automation-actions small, .treasury-history { color: #59704d; font-size: 12px; }
+.treasury-signals strong { font-size: 22px; }
+.treasury-decision { display: grid; gap: 8px; background: #e8f1de; border-radius: 8px; padding: 16px; font-size: 14px; }
+.treasury-decision .eyebrow { color: #49613e; }
+.treasury-automation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.treasury-automation-actions > span { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.treasury-history ul { padding: 8px 0 0 18px; list-style: disc; }

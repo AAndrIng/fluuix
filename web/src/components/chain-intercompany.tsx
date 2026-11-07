@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowDownUp, ArrowUpRight, Building2, CircleHelp, Wallet } from "lucide-react";
 import { createWalletClient, custom, type EIP1193Provider, type Hash } from "viem";
 import { avalancheFuji } from "viem/chains";
@@ -10,6 +10,8 @@ import { formatRate, intercompanyLabels, parseRateBps, snowtraceTransaction, typ
 import { treasuryConfig } from "@/lib/config";
 import { dateArgentina, formatArgt, parseArgt } from "@/lib/treasury-rail";
 import { vaultAbi } from "@/lib/vault-abi";
+import { PALERMO_ID } from "@/lib/treasury-automation";
+import TreasuryAutomationPanel from "./treasury-automation-panel";
 
 const apiRoot = "/api/intercompany";
 const statusNames = { pending: "Por firmar / sin hash", submitted: "Enviada", confirmed: "Confirmada", reverted: "Revertida" };
@@ -43,7 +45,7 @@ function storedHash(vault: string, id: string, hash?: Hash | null) {
   } catch { return ""; }
 }
 
-function Register({ operations }: { operations: ChainOperation[] }) {
+function Register({ operations, tokenLabel }: { operations: ChainOperation[]; tokenLabel: string }) {
   return <section className="payments-panel intercompany-panel">
     <div className="payments-heading"><div><h2>Registro intercompany</h2><p>Movimientos preparados y conciliados con el vault de Fuji.</p></div></div>
     <div className="table-scroll">{operations.length ? <table>
@@ -52,7 +54,7 @@ function Register({ operations }: { operations: ChainOperation[] }) {
         const url = operation.status === "confirmed" && operation.txHash
           ? snowtraceTransaction(operation.txHash, treasuryConfig.explorerUrl) : null;
         return <tr key={operation.id}><td>{operation.sourceName}</td><td>{operation.destinationName}</td>
-          <td title={operation.note}>{intercompanyLabels[operation.terms.kind]}</td><td>{formatArgt(operation.amount, 18)} ARGt</td>
+          <td title={operation.note}>{intercompanyLabels[operation.terms.kind]}</td><td>{formatArgt(operation.amount, 18)} {tokenLabel}</td>
           <td>{operation.terms.rateBps !== undefined ? formatRate(operation.terms.rateBps) : "—"}</td>
           <td>{dateArgentina(operation.confirmedAt ?? operation.createdAt)}</td><td>{statusNames[operation.status]}</td>
           <td>{url ? <a className="row-link" href={url} target="_blank" rel="noreferrer">Ver transacción <ArrowUpRight size={12}/></a> : "—"}</td>
@@ -62,7 +64,7 @@ function Register({ operations }: { operations: ChainOperation[] }) {
   </section>;
 }
 
-export default function ChainIntercompany({ view }: { view: "dashboard" | "mover" }) {
+export default function ChainIntercompany({ view, automation = false }: { view: "dashboard" | "mover"; automation?: boolean }) {
   const [snapshot, setSnapshot] = useState<ChainSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -72,6 +74,14 @@ export default function ChainIntercompany({ view }: { view: "dashboard" | "mover
   const [recoveryId, setRecoveryId] = useState("");
   const [recoveryHash, setRecoveryHash] = useState("");
   const lock = useRef(false);
+  const refreshSnapshot = useCallback(async () => {
+    try {
+      setSnapshot(await api<ChainSnapshot>());
+    } catch (error) {
+      if (error instanceof RequestError && error.status === 401) setSnapshot(null);
+      setError(error instanceof Error ? error.message : "No se pudieron actualizar los saldos.");
+    }
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -173,6 +183,7 @@ export default function ChainIntercompany({ view }: { view: "dashboard" | "mover
   }
 
   const open = snapshot?.operations.filter(op => op.status === "pending" || op.status === "submitted") ?? [];
+  const tokenLabel = automation ? "mARGt" : "ARGt";
   return <main className="rail-main rail-chain-page">
     <header className="rail-chain-header"><Link className="brand" href="/">fluuix</Link>
       <nav aria-label="Tesorería en Fuji"><Link href="/dashboard" aria-current={view === "dashboard" ? "page" : undefined}>Vista del grupo</Link><Link href="/mover" aria-current={view === "mover" ? "page" : undefined}>Mover caja</Link></nav>
@@ -205,9 +216,10 @@ export default function ChainIntercompany({ view }: { view: "dashboard" | "mover
         <button className="button button-dark submit-button" disabled={busy || snapshot.operativas.length < 2}>{busy ? "Procesando…" : "Preparar y firmar en Fuji"}</button>
       </form>}
       {view === "dashboard" && <section className="operations-grid rail-chain-operations" aria-label="Saldos en Fuji">{snapshot.operativas.map(op => <article className="operation-card" key={op.id}>
-        <div className="operation-title"><span className="operation-avatar"><Building2 size={18}/></span><h2>{op.nombre}</h2></div><div className="operation-balance">{formatArgt(op.saldo)} <small>ARGt</small></div>
+        <div className="operation-title"><span className="operation-avatar"><Building2 size={18}/></span><h2>{op.nombre}</h2></div><div className="operation-balance">{formatArgt(op.saldo)} <small>{tokenLabel}</small></div>
       </article>)}</section>}
-      <Register operations={snapshot.operations}/>
+      {view === "dashboard" && automation && <TreasuryAutomationPanel balance={snapshot.operativas.find(op => op.id === PALERMO_ID)?.saldo} onSettled={refreshSnapshot}/>}
+      <Register operations={snapshot.operations} tokenLabel={tokenLabel}/>
       {!!open.length && <form className="rail-form-panel rail-chain-recovery" onSubmit={recover}>
         <div className="form-section-title"><span className="dialog-icon"><CircleHelp/></span><div><h2>Conciliar transacción</h2><p>Usá el hash de una operación que ya enviaste desde la wallet.</p></div></div>
         <label>Operación<select required value={recoveryId} onChange={event => {
