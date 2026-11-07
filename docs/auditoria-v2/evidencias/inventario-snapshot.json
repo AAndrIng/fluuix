@@ -1,0 +1,358 @@
+{
+  "archivo": "fluuix-main.zip",
+  "sha256_zip": "5d1dd5f7dc3ab31d97f6debf6a4ef591bc47e86429ec677816bf79ccceece2aa",
+  "referencia_declarada_zip": "6db42cb9cca3923d98d11e4f99eada280b06a30f",
+  "nota": "Referencia obtenida del comentario del ZIP, no de un clon con historial Git.",
+  "archivos": [
+    {
+      "ruta": "CLAUDE.md",
+      "bytes": 5318,
+      "sha256": "0c2b11dcfede7cdf7f624c9d2915665b6124620be07c16e933d7c6f268ca9318"
+    },
+    {
+      "ruta": "README.md",
+      "bytes": 1605,
+      "sha256": "4d51c2cf5a2684b3124da62ecb5d8d5b4896517cc01b2b1256b2ffb4a741bf38"
+    },
+    {
+      "ruta": "docs/estrategia-interna.md",
+      "bytes": 3769,
+      "sha256": "c70aa19b32ba719945b1ebcfd08ff2886f6e7519fd57663dc7930fc396a20cdc"
+    },
+    {
+      "ruta": "docs/fluuix-treasury-rail.md",
+      "bytes": 9697,
+      "sha256": "881a023927f33c56b6d83ef149dac0925b10d015b51d23b79f460d9d3995823a"
+    },
+    {
+      "ruta": "docs/gtm-conceptos.md",
+      "bytes": 3200,
+      "sha256": "1676880d8495c84078b212938d72ac6d6070379cf1d13a6e3b6d7f4bb128dba6"
+    },
+    {
+      "ruta": "docs/historial-chat.md",
+      "bytes": 4114,
+      "sha256": "aa0b93da1fe16327a074db65509003763329fa41a75991777079e1fddaad7614"
+    },
+    {
+      "ruta": "docs/machete-hackatwin.md",
+      "bytes": 16359,
+      "sha256": "f92c951e8d56c81af0050e2d0f23b47e60b711dd5fa8e6ec7708b2a1da186bfa"
+    },
+    {
+      "ruta": "resumen-500.md",
+      "bytes": 523,
+      "sha256": "47866775c3b927e4d6a9607ef00a759dcac668dfa0832fd1b664baafebe8d00b"
+    },
+    {
+      "ruta": "web/.env.example",
+      "bytes": 726,
+      "sha256": "72235c3d9fd629ecfaba26dccc5911e02e8cd81f9fa5c109a50077a0ae6dbf9c"
+    },
+    {
+      "ruta": "web/.gitignore",
+      "bytes": 494,
+      "sha256": "e279dc634935e6657838cbaf65c2500a9c1e48ad6dbf2c388a93fb03dff2409f"
+    },
+    {
+      "ruta": "web/AGENTS.md",
+      "bytes": 679,
+      "sha256": "063098f6cb31bb44c6f8fbea25b3876de7ee1e5f7d00a50dbab506f6415eb7f0"
+    },
+    {
+      "ruta": "web/README.md",
+      "bytes": 1450,
+      "sha256": "60b55ff7df79af72590f9524208e46642bc32bdc175cdad41349681c0e2f958f"
+    },
+    {
+      "ruta": "web/TREASURY-RAIL.md",
+      "bytes": 14898,
+      "sha256": "a6c64cccbf6ec3731a9f2f6f1ccf6a91c3d2d3018ef6e524bf4a3766636e9532"
+    },
+    {
+      "ruta": "web/components.json",
+      "bytes": 521,
+      "sha256": "a7720c54d6a109d6063937fac1c7766c44a1020cdbe43eb489ca2cb126fbbaa9"
+    },
+    {
+      "ruta": "web/db/001_intercompany.sql",
+      "bytes": 1872,
+      "sha256": "65033edb54d515ee7536a4388692049407d80a53b84b54ef752d189cb398b896"
+    },
+    {
+      "ruta": "web/db/002_treasury_automation.sql",
+      "bytes": 1209,
+      "sha256": "72a78d3510e9666c757af427ea06cdc0f94821f25159d6be9be744df48cdbf88"
+    },
+    {
+      "ruta": "web/eslint.config.mjs",
+      "bytes": 465,
+      "sha256": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+    },
+    {
+      "ruta": "web/next.config.ts",
+      "bytes": 318,
+      "sha256": "17145a9822ec351b92b8a5f8d3a709a531c8690ed92d397a4405ae084ea9acc7"
+    },
+    {
+      "ruta": "web/package-lock.json",
+      "bytes": 390113,
+      "sha256": "bb8e04c1afca1c896203b07f0108222f4282f53341fad844b4f385c44ec3c9d7"
+    },
+    {
+      "ruta": "web/package.json",
+      "bytes": 776,
+      "sha256": "b90159c77e8b63fd59af0deaaa453f474a9e0972aaae4c7f3cce3ffbd7a3a21f"
+    },
+    {
+      "ruta": "web/public/file.svg",
+      "bytes": 391,
+      "sha256": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4"
+    },
+    {
+      "ruta": "web/public/globe.svg",
+      "bytes": 1035,
+      "sha256": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf"
+    },
+    {
+      "ruta": "web/public/next.svg",
+      "bytes": 1375,
+      "sha256": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc"
+    },
+    {
+      "ruta": "web/public/vercel.svg",
+      "bytes": 128,
+      "sha256": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4"
+    },
+    {
+      "ruta": "web/public/window.svg",
+      "bytes": 385,
+      "sha256": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"
+    },
+    {
+      "ruta": "web/scripts/treasury-automation.test.mjs",
+      "bytes": 4007,
+      "sha256": "de6229a774e326653d30ad4623e42ae97a300116675108f6e7c49affc15dc6c1"
+    },
+    {
+      "ruta": "web/scripts/treasury-rail.test.mjs",
+      "bytes": 6760,
+      "sha256": "e100bd817f8573eff3076b8e9ca4d981e9eddad6d7257a8977bd2dc9fa28369e"
+    },
+    {
+      "ruta": "web/src/app/agente/page.tsx",
+      "bytes": 136,
+      "sha256": "8bbac4869c207bae8fd35a11c0eac31fb756a515e885d9c41611c51b5ce0b971"
+    },
+    {
+      "ruta": "web/src/app/api/intercompany/[id]/confirmacion/route.ts",
+      "bytes": 630,
+      "sha256": "b2b6aa80087b19ba48299ffa24663afde62730cf795c43d4ff35d42f79ecdaf5"
+    },
+    {
+      "ruta": "web/src/app/api/intercompany/automatizacion/route.ts",
+      "bytes": 1877,
+      "sha256": "be4da331888a383506932b200c96f8fd1033b509d4e3b9da54c36520e92f1411"
+    },
+    {
+      "ruta": "web/src/app/api/intercompany/route.ts",
+      "bytes": 923,
+      "sha256": "31a88df3453813c70e4669398b687962e46b1b57f3335b8f84541cb80331787b"
+    },
+    {
+      "ruta": "web/src/app/api/intercompany/session/route.ts",
+      "bytes": 411,
+      "sha256": "ca6fc212567ef668ce9c17f036441f6af6ba7ca7ae7f4121b3e11068b69aa5db"
+    },
+    {
+      "ruta": "web/src/app/app/page.tsx",
+      "bytes": 45,
+      "sha256": "a3646bfccc0390227f8075462751de7602bdf7836a22c69ad982c760ae6bf206"
+    },
+    {
+      "ruta": "web/src/app/comparar/page.tsx",
+      "bytes": 422,
+      "sha256": "dfa921acf2c9df918f093d4e26762fb03d2cff2d8cfc222eec3a7885c551c80c"
+    },
+    {
+      "ruta": "web/src/app/dashboard/page.tsx",
+      "bytes": 453,
+      "sha256": "86aa74ff27edcc60861d22e8a8b2d023b16141d4441937d59ea288fa6e230d97"
+    },
+    {
+      "ruta": "web/src/app/demo.css",
+      "bytes": 17859,
+      "sha256": "36e04a5ee8acc55ee4039639f822984198184588aa9c5770b3b1a56d5bdc8c87"
+    },
+    {
+      "ruta": "web/src/app/depositar/page.tsx",
+      "bytes": 138,
+      "sha256": "d6a77539dfca1ffd16f5a840e21ffb5c13ebaf44158f2de7683910cf452729d3"
+    },
+    {
+      "ruta": "web/src/app/favicon.ico",
+      "bytes": 15086,
+      "sha256": "c28fdd2a4f31e2dc64f653962286da5c82a4cdfc518b242d32812c624e9a19a4"
+    },
+    {
+      "ruta": "web/src/app/fluuix.css",
+      "bytes": 23291,
+      "sha256": "409e77cad85a953196223c9e144e1c802484ae87b845560098a9d6999c024da6"
+    },
+    {
+      "ruta": "web/src/app/globals.css",
+      "bytes": 4304,
+      "sha256": "15fd52bd462719c6469cb5978ece7a907e9558ac22050005abe8b865524e05e1"
+    },
+    {
+      "ruta": "web/src/app/icon.svg",
+      "bytes": 325,
+      "sha256": "e044603cb63100687b3f2ac91ed23bb690050ca1d25070e74b2408a9b55464c1"
+    },
+    {
+      "ruta": "web/src/app/intercompany.css",
+      "bytes": 3751,
+      "sha256": "cee9c639ae7e63afe349710ff408b9661d7e98d3d50a234d04ef2af10976f891"
+    },
+    {
+      "ruta": "web/src/app/layout.tsx",
+      "bytes": 993,
+      "sha256": "7873a57b9033a30bfc3bd6b049505d746a56ee24e08b260b2755b0647122705e"
+    },
+    {
+      "ruta": "web/src/app/mover/page.tsx",
+      "bytes": 323,
+      "sha256": "625491616f0307882e9d42538883a3c064933a8ef97a798f9943a8cc4519399c"
+    },
+    {
+      "ruta": "web/src/app/operativas/page.tsx",
+      "bytes": 142,
+      "sha256": "d335211b133b3277c97eaa724f232701d4f86906d3d1b81c9ddd144c51d39c5b"
+    },
+    {
+      "ruta": "web/src/app/page.tsx",
+      "bytes": 112,
+      "sha256": "c27d0fdb30fdb6c18a8cfd61151d4ba410a24ba595300888041f413e39aeb20a"
+    },
+    {
+      "ruta": "web/src/app/pagos/page.tsx",
+      "bytes": 135,
+      "sha256": "e4a9eaa9faab45d5775fdc31079e746b70c25be73c96a7500407b5fa12c10cae"
+    },
+    {
+      "ruta": "web/src/app/rail.css",
+      "bytes": 29858,
+      "sha256": "d2e7a648d7749d58603f5a2f432bdc7e482d7fd9429884980d272fd589ffc599"
+    },
+    {
+      "ruta": "web/src/components/chain-intercompany.tsx",
+      "bytes": 14653,
+      "sha256": "c60d126009f849989c20cc63151606c31ed9311ac123cc021c51f0347841a1df"
+    },
+    {
+      "ruta": "web/src/components/intercompany-register.tsx",
+      "bytes": 2121,
+      "sha256": "8f047d86e7b1684ec820701e93fab6fa59ae0aff92f9266c3705b96fb066d9c8"
+    },
+    {
+      "ruta": "web/src/components/rail-dashboard.tsx",
+      "bytes": 33346,
+      "sha256": "37d2c7001761328f0ed3b2982611b017d2e4b111851bc0e1e12310a3fcd5ccb8"
+    },
+    {
+      "ruta": "web/src/components/rail-landing.tsx",
+      "bytes": 13846,
+      "sha256": "cdde36a7da8467cd876acf18648702767f944c6951f79d3534eb1b6d43aa1ef1"
+    },
+    {
+      "ruta": "web/src/components/treasury-agent.tsx",
+      "bytes": 6699,
+      "sha256": "f08676825e1c17304dc23c619cdec0ad29c067f56ff6737d819b8ceb06a7495d"
+    },
+    {
+      "ruta": "web/src/components/treasury-automation-panel.tsx",
+      "bytes": 8143,
+      "sha256": "f6586731ae131a36997965a34bf98a7f48e8f602715e3f2171d1fab1a508b64e"
+    },
+    {
+      "ruta": "web/src/components/ui/button.tsx",
+      "bytes": 3375,
+      "sha256": "08e5f87833c5db8436e89337ebde0f776bcdbf649d3de69fb89be6441ca2e366"
+    },
+    {
+      "ruta": "web/src/lib/config.ts",
+      "bytes": 443,
+      "sha256": "ef7fe838f771121d5ff13c14dbc5e3de83b2a42f3a033236af9f7210bd12f30d"
+    },
+    {
+      "ruta": "web/src/lib/intercompany-api.ts",
+      "bytes": 776,
+      "sha256": "7fbd160a99260f780fd801800c2aac7034f5d79278b516ec9c39832759948857"
+    },
+    {
+      "ruta": "web/src/lib/intercompany.ts",
+      "bytes": 1373,
+      "sha256": "4e826b85eb63b7053cff27c35736c0c8127139b90217c71f8acdbeea752116aa"
+    },
+    {
+      "ruta": "web/src/lib/server/fuji.ts",
+      "bytes": 2329,
+      "sha256": "71153fd15ecf927957a0dee5dfc14aee0bccea2a78de558a3aa2931c367e0f29"
+    },
+    {
+      "ruta": "web/src/lib/server/http.ts",
+      "bytes": 1757,
+      "sha256": "7c3c5dcb732a2aacadbac3c4772c430b4d4c2b68fb5aa625a54bfe2e9f84cd83"
+    },
+    {
+      "ruta": "web/src/lib/server/intercompany-db.ts",
+      "bytes": 4128,
+      "sha256": "75fd6b81ea709f6263a3e3cf533e15a1513730da340d6e9103a99dba5ca5c547"
+    },
+    {
+      "ruta": "web/src/lib/server/intercompany-service.ts",
+      "bytes": 7183,
+      "sha256": "0db0a3dd3a20884db3f8bae43788020eaf07636d43b130722ea5fbb89c6c0f99"
+    },
+    {
+      "ruta": "web/src/lib/server/treasury-automation-service.ts",
+      "bytes": 10381,
+      "sha256": "f30564a33c003fd9f5cab2ff2a69788f0572b62efc3d6bdc0aba43beec0df290"
+    },
+    {
+      "ruta": "web/src/lib/server/treasury-model.ts",
+      "bytes": 2481,
+      "sha256": "86b8831033063eceabb3af8aad13fd530958e598e0922a5614f3a1e6873a2a41"
+    },
+    {
+      "ruta": "web/src/lib/server/wallet-session.ts",
+      "bytes": 5218,
+      "sha256": "5f48ef97cfab2286aa7fe59eabf7e9709414816d0da215b44cb3a04ffd83abfe"
+    },
+    {
+      "ruta": "web/src/lib/treasury-automation.ts",
+      "bytes": 3109,
+      "sha256": "853d4d0b7ee338b1e657df048c603c66f2dfd1bfc4d44679bd05491f43f6d202"
+    },
+    {
+      "ruta": "web/src/lib/treasury-rail.ts",
+      "bytes": 12915,
+      "sha256": "fd157c15564f9fb6d9b26df48bdcb1f531a6f156491f2acacb8f448448809fb1"
+    },
+    {
+      "ruta": "web/src/lib/utils.ts",
+      "bytes": 24,
+      "sha256": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7"
+    },
+    {
+      "ruta": "web/src/lib/vault-abi.ts",
+      "bytes": 822,
+      "sha256": "cb653f886ec2c1c5ba8dab7bfe194969bf9c305b2b87d30ad7eaf382fdef92e7"
+    },
+    {
+      "ruta": "web/tsconfig.json",
+      "bytes": 710,
+      "sha256": "b53b3180947a68a9d69521b5185b2081afc33658acfbf91fa154f7456fcf74f6"
+    }
+  ]
+}

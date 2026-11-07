@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { ApiError, json, readJson, respond } from "@/lib/server/http";
 import { authorize } from "@/lib/server/wallet-session";
-import { advanceRun, automationEnabled, evaluateTreasury, listRuns, vetoRun } from "@/lib/server/treasury-automation-service";
+import { advanceRun, automationDemoAllowed, automationEnabled, evaluateTreasury, listRuns, vetoRun } from "@/lib/server/treasury-automation-service";
 
 export const maxDuration = 60;
 
@@ -15,7 +15,7 @@ export function GET(request: NextRequest) {
   return respond(async () => {
     const { vault } = await authorizeAutomation(request);
     const runs = await listRuns(vault);
-    return json({ runs, serverNow: Date.now() });
+    return json({ runs, serverNow: Date.now(), demoAllowed: automationDemoAllowed() });
   });
 }
 

@@ -56,11 +56,24 @@ export function loanCandidate(accounts: CashAccount[], reserves: ReadonlyMap<num
   } satisfies LoanProposal;
 }
 
+/** Revalida datos persistidos sin confiar solo en los tipos de TypeScript.
+ * Es una defensa de la aplicación: las reservas siguen sin estar impuestas onchain.
+ */
 export function proposalStillValid(accounts: CashAccount[], reserves: ReadonlyMap<number, bigint>, threshold: bigint, loan: LoanProposal) {
-  const destination = accounts.find(account => account.id === loan.destinationId);
-  const source = accounts.find(account => account.id === loan.sourceId);
-  const reserve = reserves.get(loan.sourceId);
+  if (!loan || typeof loan !== "object" || !Number.isSafeInteger(loan.sourceId) || loan.sourceId < 0 ||
+      loan.destinationId !== PALERMO_ID || loan.sourceId === PALERMO_ID || loan.rateBps !== rateBps ||
+      typeof loan.amount !== "string" || !/^[1-9]\d{0,36}$/.test(loan.amount) ||
+      threshold < FIXED_THRESHOLD || threshold > UNIT || threshold % (UNIT / BigInt(100)) !== BigInt(0)) return false;
   const amount = BigInt(loan.amount);
-  return destination && source && reserve !== undefined && BigInt(destination.saldo) < threshold &&
-    BigInt(destination.saldo) + amount <= targetBalance && BigInt(source.saldo) - amount >= reserve;
+  if (amount > loanCap) return false;
+  const destinations = accounts.filter(account => account.id === PALERMO_ID);
+  const sources = accounts.filter(account => account.id === loan.sourceId);
+  const reserve = reserves.get(loan.sourceId);
+  if (destinations.length !== 1 || sources.length !== 1 || reserve === undefined || reserve < BigInt(0)) return false;
+  const destination = destinations[0];
+  const source = sources[0];
+  const validBalance = (value: unknown): value is string => typeof value === "string" && /^(0|[1-9]\d{0,77})$/.test(value);
+  if (!validBalance(source.saldo) || !validBalance(destination.saldo)) return false;
+  return BigInt(destination.saldo) < threshold && BigInt(destination.saldo) + amount <= targetBalance &&
+    BigInt(source.saldo) - amount >= reserve;
 }

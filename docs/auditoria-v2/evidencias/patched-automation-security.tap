@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: Política: conserva una propuesta legítima de 1,5 mARGt
+ok 1 - Política: conserva una propuesta legítima de 1,5 mARGt
+  ---
+  duration_ms: 1.048747
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe cero
+ok 2 - Política: rechaza importe cero
+  ---
+  duration_ms: 0.177138
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe negativo
+ok 3 - Política: rechaza importe negativo
+  ---
+  duration_ms: 0.06597
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe no numérico
+ok 4 - Política: rechaza importe no numérico
+  ---
+  duration_ms: 0.060963
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe con ceros ambiguos
+ok 5 - Política: rechaza importe con ceros ambiguos
+  ---
+  duration_ms: 0.05912
+  type: 'test'
+  ...
+# Subtest: Política: rechaza importe excesivamente largo
+ok 6 - Política: rechaza importe excesivamente largo
+  ---
+  duration_ms: 0.062965
+  type: 'test'
+  ...
+# Subtest: Política: rechaza tasa distinta de la política
+ok 7 - Política: rechaza tasa distinta de la política
+  ---
+  duration_ms: 0.082866
+  type: 'test'
+  ...
+# Subtest: Política: no acepta cambiar Palermo por otra operativa
+ok 8 - Política: no acepta cambiar Palermo por otra operativa
+  ---
+  duration_ms: 0.096986
+  type: 'test'
+  ...
+# Subtest: Política: origen y destino no pueden coincidir
+ok 9 - Política: origen y destino no pueden coincidir
+  ---
+  duration_ms: 0.231661
+  type: 'test'
+  ...
+# Subtest: Política: no admite saldos negativos aunque alcancen el objetivo aparente
+ok 10 - Política: no admite saldos negativos aunque alcancen el objetivo aparente
+  ---
+  duration_ms: 0.441317
+  type: 'test'
+  ...
+# Subtest: Política: no admite IDs duplicados ni reservas negativas
+ok 11 - Política: no admite IDs duplicados ni reservas negativas
+  ---
+  duration_ms: 0.171088
+  type: 'test'
+  ...
+# Subtest: Política: umbral dentro de 25 a 100 centésimos y sin fracciones menores
+ok 12 - Política: umbral dentro de 25 a 100 centésimos y sin fracciones menores
+  ---
+  duration_ms: 0.094052
+  type: 'test'
+  ...
+# Subtest: Política: falla cerrado ante saldos corruptos o IDs inseguros
+ok 13 - Política: falla cerrado ante saldos corruptos o IDs inseguros
+  ---
+  duration_ms: 0.11232
+  type: 'test'
+  ...
+# Subtest: Política: mantiene el límite de 2 tokens y las reservas
+ok 14 - Política: mantiene el límite de 2 tokens y las reservas
+  ---
+  duration_ms: 0.089295
+  type: 'test'
+  ...
+# Subtest: Servidor: pitch requiere autorización explícita aunque el vault esté habilitado
+ok 15 - Servidor: pitch requiere autorización explícita aunque el vault esté habilitado
+  ---
+  duration_ms: 76.689581
+  type: 'test'
+  ...
+# Subtest: Servidor: habilitar pitch expresamente conserva la ventana de 5 segundos
+ok 16 - Servidor: habilitar pitch expresamente conserva la ventana de 5 segundos
+  ---
+  duration_ms: 65.381347
+  type: 'test'
+  ...
+# Subtest: Servidor: modo normal conserva 180 segundos y no firma al evaluar
+ok 17 - Servidor: modo normal conserva 180 segundos y no firma al evaluar
+  ---
+  duration_ms: 47.42829
+  type: 'test'
+  ...
+# Subtest: Servidor: la política se aplica también cuando se invoca el servicio sin la ruta
+ok 18 - Servidor: la política se aplica también cuando se invoca el servicio sin la ruta
+  ---
+  duration_ms: 33.087449
+  type: 'test'
+  ...
+# Subtest: Servidor: reutiliza la propuesta activa en lugar de registrar otra
+ok 19 - Servidor: reutiliza la propuesta activa en lugar de registrar otra
+  ---
+  duration_ms: 38.517102
+  type: 'test'
+  ...
+# Subtest: Servidor: no firma ni emite antes del vencimiento
+ok 20 - Servidor: no firma ni emite antes del vencimiento
+  ---
+  duration_ms: 44.697459
+  type: 'test'
+  ...
+# Subtest: Servidor: un veto dentro de la ventana impide la firma posterior
+ok 21 - Servidor: un veto dentro de la ventana impide la firma posterior
+  ---
+  duration_ms: 27.913302
+  type: 'test'
+  ...
+# Subtest: Servidor: no admite veto cuando finalizó el plazo
+ok 22 - Servidor: no admite veto cuando finalizó el plazo
+  ---
+  duration_ms: 31.524364
+  type: 'test'
+  ...
+# Subtest: Servidor: deshabilitar pitch bloquea una propuesta previamente programada
+ok 23 - Servidor: deshabilitar pitch bloquea una propuesta previamente programada
+  ---
+  duration_ms: 34.366864
+  type: 'test'
+  ...
+# Subtest: Servidor: no retransmite bytes preparados de pitch si se retiró su habilitación
+ok 24 - Servidor: no retransmite bytes preparados de pitch si se retiró su habilitación
+  ---
+  duration_ms: 27.231671
+  type: 'test'
+  ...
+# Subtest: Servidor: el bloqueo de pitch no impide conciliar una transacción ya confirmada
+ok 25 - Servidor: el bloqueo de pitch no impide conciliar una transacción ya confirmada
+  ---
+  duration_ms: 27.553518
+  type: 'test'
+  ...
+# Subtest: Servidor: un hash distinto de los bytes persistidos impide la emisión
+ok 26 - Servidor: un hash distinto de los bytes persistidos impide la emisión
+  ---
+  duration_ms: 24.240486
+  type: 'test'
+  ...
+# Subtest: Servidor: el recorrido normal firma, emite y luego concilia sin volver a firmar
+ok 27 - Servidor: el recorrido normal firma, emite y luego concilia sin volver a firmar
+  ---
+  duration_ms: 28.046253
+  type: 'test'
+  ...
+# Subtest: Servidor: saldos insuficientes en la revalidación descartan sin firmar
+ok 28 - Servidor: saldos insuficientes en la revalidación descartan sin firmar
+  ---
+  duration_ms: 28.617246
+  type: 'test'
+  ...
+# Subtest: Servidor: alterar la tasa persistida no autoriza una firma fuera de política
+ok 29 - Servidor: alterar la tasa persistida no autoriza una firma fuera de política
+  ---
+  duration_ms: 21.562856
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1076.433287

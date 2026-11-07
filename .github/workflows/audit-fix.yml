@@ -1,0 +1,45 @@
+name: Verificación de audit-fix
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-fix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas-seguridad:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      NEXT_PUBLIC_MODE: mock
+    steps:
+      - name: Obtener el código sin persistir credenciales
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 consultada el 07/11/2026
+        with:
+          persist-credentials: false
+      - name: Preparar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 consultada el 07/11/2026
+        with:
+          node-version: '22'
+      - name: Instalar desde el archivo de bloqueo sin scripts de instalación
+        run: npm ci --ignore-scripts
+      - name: Ejecutar pruebas funcionales y de seguridad aisladas
+        run: npm test
+      - name: Revisar estilo
+        run: npm run lint
+      - name: Verificar tipos
+        run: npm run typecheck
+      - name: Compilar la demostración
+        run: npm run build
+      - name: Revisar vulnerabilidades de dependencias de producción
+        run: npm audit --omit=dev --audit-level=high

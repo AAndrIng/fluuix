@@ -1,0 +1,122 @@
+TAP version 13
+# (node:549) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:549) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///mnt/data/work-fluuix/source/fluuix-main/web/src/lib/treasury-automation.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /mnt/data/work-fluuix/source/fluuix-main/web/package.json.
+# Subtest: the pitch balance needs a preventive threshold to trigger the 1.5 mARGt loan
+ok 1 - the pitch balance needs a preventive threshold to trigger the 1.5 mARGt loan
+  ---
+  duration_ms: 5.555329
+  type: 'test'
+  ...
+# Subtest: fallback funding uses the greatest eligible surplus and preserves the reserve
+ok 2 - fallback funding uses the greatest eligible surplus and preserves the reserve
+  ---
+  duration_ms: 0.327895
+  type: 'test'
+  ...
+# Subtest: revalidation rejects recovered balances, overshooting the target, and depleted reserves
+ok 3 - revalidation rejects recovered balances, overshooting the target, and depleted reserves
+  ---
+  duration_ms: 0.255315
+  type: 'test'
+  ...
+# Subtest: preventive thresholds reject out-of-policy values and fall back when the model is unavailable
+ok 4 - preventive thresholds reject out-of-policy values and fall back when the model is unavailable
+  ---
+  duration_ms: 26.696089
+  type: 'test'
+  ...
+# Subtest: pitch mode produces the demo threshold without calling the model
+ok 5 - pitch mode produces the demo threshold without calling the model
+  ---
+  duration_ms: 0.156767
+  type: 'test'
+  ...
+# (node:550) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:550) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///mnt/data/work-fluuix/source/fluuix-main/web/src/lib/intercompany.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /mnt/data/work-fluuix/source/fluuix-main/web/package.json.
+# Subtest: rebalance redistributes in contract order and preserves group liquidity
+ok 6 - rebalance redistributes in contract order and preserves group liquidity
+  ---
+  duration_ms: 27.852596
+  type: 'test'
+  ...
+# Subtest: end-to-end transfer and payroll replenish only after payout
+ok 7 - end-to-end transfer and payroll replenish only after payout
+  ---
+  duration_ms: 1.589189
+  type: 'test'
+  ...
+# Subtest: partial replenishment exhausts central funds without creating money
+ok 8 - partial replenishment exhausts central funds without creating money
+  ---
+  duration_ms: 0.420375
+  type: 'test'
+  ...
+# Subtest: an operative exactly at its minimum is not replenished
+ok 9 - an operative exactly at its minimum is not replenished
+  ---
+  duration_ms: 0.213823
+  type: 'test'
+  ...
+# Subtest: internal transfer does not trigger automatic replenishment
+ok 10 - internal transfer does not trigger automatic replenishment
+  ---
+  duration_ms: 0.419393
+  type: 'test'
+  ...
+# Subtest: insufficient funds and invalid recipients revert the entire simulated action
+ok 11 - insufficient funds and invalid recipients revert the entire simulated action
+  ---
+  duration_ms: 0.631083
+  type: 'test'
+  ...
+# Subtest: deposits change group funds and wallet, but not internal volume or paid total
+ok 12 - deposits change group funds and wallet, but not internal volume or paid total
+  ---
+  duration_ms: 0.273563
+  type: 'test'
+  ...
+# Subtest: money parsing preserves 18 decimals and rejects ambiguous input
+ok 13 - money parsing preserves 18 decimals and rejects ambiguous input
+  ---
+  duration_ms: 0.230317
+  type: 'test'
+  ...
+# Subtest: CSV import handles quoted commas and rejects invalid columns and oversized batches
+ok 14 - CSV import handles quoted commas and rejects invalid columns and oversized batches
+  ---
+  duration_ms: 0.851216
+  type: 'test'
+  ...
+# Subtest: thresholds cannot mutate central rules and must have target >= minimum
+ok 15 - thresholds cannot mutate central rules and must have target >= minimum
+  ---
+  duration_ms: 0.699556
+  type: 'test'
+  ...
+# Subtest: dates render deterministically in Argentina
+ok 16 - dates render deterministically in Argentina
+  ---
+  duration_ms: 4.845066
+  type: 'test'
+  ...
+# Subtest: intercompany loan terms persist without changing the principal or accruing interest
+ok 17 - intercompany loan terms persist without changing the principal or accruing interest
+  ---
+  duration_ms: 0.934591
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 190.785286

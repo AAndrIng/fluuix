@@ -34,7 +34,8 @@ function activityChange(actual: number, usual: number) {
 export default function TreasuryAutomationPanel({ balance, onSettled }: { balance?: string; onSettled: () => Promise<void> }) {
   const [runs, setRuns] = useState<AutomationRun[]>([]);
   const [scenario, setScenario] = useState<ActivityScenario>("surge");
-  const [mode, setMode] = useState<AutomationMode>("demo");
+  const [mode, setMode] = useState<AutomationMode>("normal");
+  const [demoAllowed, setDemoAllowed] = useState(false);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -49,9 +50,10 @@ export default function TreasuryAutomationPanel({ balance, onSettled }: { balanc
 
   useEffect(() => {
     let mounted = true;
-    request<{ runs: AutomationRun[] }>().then(data => {
+    request<{ runs: AutomationRun[]; demoAllowed: boolean }>().then(data => {
       if (!mounted) return;
       setRuns(data.runs);
+      setDemoAllowed(data.demoAllowed === true);
       setClockOffset(data.serverNow - Date.now());
       setClock(Date.now());
     }).catch(error => { if (mounted) setError(error.message); }).finally(() => { if (mounted) setReady(true); });
@@ -117,7 +119,7 @@ export default function TreasuryAutomationPanel({ balance, onSettled }: { balanc
     </div>
     <div className="form-columns">
       <label>Actividad · última hora<select value={active?.scenario ?? scenario} disabled={busy || Boolean(active)} onChange={event => setScenario(event.target.value as ActivityScenario)}><option value="surge">Pico de tráfico y ventas</option><option value="normal">Actividad habitual</option></select></label>
-      <label>Ventana de veto<select value={active?.mode ?? mode} disabled={busy || Boolean(active)} onChange={event => setMode(event.target.value as AutomationMode)}><option value="demo">Escenario de pitch · 5 segundos</option><option value="normal">Modo normal · 3 minutos</option></select></label>
+      <label>Ventana de veto<select value={active?.mode ?? mode} disabled={busy || Boolean(active)} onChange={event => setMode(event.target.value as AutomationMode)}><option value="normal">Modo normal · 3 minutos</option>{(demoAllowed || active?.mode === "demo") && <option value="demo" disabled={!demoAllowed}>Escenario de pitch · 5 segundos</option>}</select></label>
     </div>
     {error && <p className="form-error" role="alert">{error}</p>}
     {latest && <div className="treasury-decision" aria-live="polite">
