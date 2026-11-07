@@ -1,3 +1,3 @@
-# Resumen (469 caracteres)
+# Resumen (494 caracteres)
 
-Fluuix – Treasury Rail es una tesorería on-chain para PyMEs y holdings de LATAM. Centraliza la caja de todas las operativas en stablecoins de moneda local (ARGt de Twin) sobre Avalanche: transferencias instantáneas entre empresas del grupo sin pagar el impuesto al cheque en cada movimiento interno, pagos de sueldos y proveedores en segundos, inversión de la caja ociosa 24/7 y flujo de caja predictivo. Blockchain como habilitador: lo de siempre, más rápido y barato.
+Fluuix – Treasury Rail es una tesorería on-chain para holdings y PyMEs de LATAM. Centraliza la caja de todas las sociedades del grupo en stablecoins de moneda local de Twin (ARGt y sus equivalentes) sobre Avalanche: liquidez instantánea entre sociedades y países, préstamos intercompany documentados automáticamente, pagos a proveedores en segundos y un agente de IA que coloca la caja ociosa 24/7 según los límites de riesgo de la empresa. Se usa por interfaz o API y alimenta al ERP.
